@@ -55,10 +55,14 @@ plot(ndvi2006, col=cl)
 # automatic spectral indices (si)
 si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
 plot(si1992, col=cl)
-
 # codice del professore: si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
 # si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
 # plot(si1992,col=cl)
 
+install.packages("rasterdiv")
+library(rasterdiv)
+# cop sta per copernicus: 8-bit raster, media globale dell'NDVI in un certo lasso di tempo 
+plot(copNDVI)
+# zone verdi sono quelle con più biomassa (foreste di conifere e fascia equatoriale)
 
 
