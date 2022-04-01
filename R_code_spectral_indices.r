@@ -65,4 +65,8 @@ library(rasterdiv)
 plot(copNDVI)
 # zone verdi sono quelle con più biomassa (foreste di conifere e fascia equatoriale)
 
+# day 3
+# Time series analysis
+# Greenland increase of temperature
+
 
