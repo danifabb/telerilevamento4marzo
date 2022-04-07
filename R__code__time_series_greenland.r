@@ -59,6 +59,3 @@ plot(en113, col=cl)
 difen <- en[[1]] - en[[13]]
 cldif <- colorRampPalette(c('blue','white','red'))(100)
 plot(difen, col=cldif)
-
-
-plot(tgen[[1]], tgen[[13]], col=cl)
