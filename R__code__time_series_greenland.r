@@ -29,3 +29,36 @@ plot(tgr, col=cl)
 plot(tgr[[1]], col=cl)
 # elementi montati su bande diverse con RGB, sovrapposizione temporale, bande sovrapposte nella stessa immagine
 plotRGB(tgr, r=1, g=2, b=3, stretch="lin")
+
+library(raster)
+# ex 2: NO2 decrease during lockdown
+setwd("C:/lab/en")
+# importiamo il primo dato
+en01 <- raster("EN_0001.png")
+cl <- colorRampPalette(c('red','orange','yellow'))(100)
+plot(en01, col=cl)
+# importiamo il 13esimo dato
+en13 <- raster("EN_0013.png")
+# import the whole set of images with list.files, lapply and stack
+enlist <- list.files(pattern="EN")
+enlist
+# applico funzione raster a tutti e tredici gli elementi, ovvero li importo tutti
+import <- lapply(enlist, raster)
+# stack mette tutti i file in un multiframe (stessa immagine)
+tgen <- stack(import)
+plot(tgen, col=cl)
+# plot en1 besides en13
+par(mfrow=c(1,2))
+plot(en01, col=cl)
+plot(en13, col=cl)
+# oppure
+en113 <- stack(tgen[[1]], tgen[[13]])
+plot(en113, col=cl)
+
+# let's make the difference
+difen <- en[[1]] - en[[13]]
+cldif <- colorRampPalette(c('blue','white','red'))(100)
+plot(difen, col=cldif)
+
+
+plot(tgen[[1]], tgen[[13]], col=cl)
