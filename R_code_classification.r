@@ -1,0 +1,12 @@
+# classificazione di natura automatica (pixel simili)
+library(raster)
+library(RStoolbox)
+setwd("C:/lab/")
+# data import
+so <- brick("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
+plotRGB(so, r=1, g=2, b=3, stretch="lin")
+# ci sono tre livelli di pixel (3 colori, giallo, nero e intermedio - si disporranno su "nuvole" diverse)
+# unsuperClass: non supervisionata, la AI capisce quali sono le classi, noi non glielo diciamo (solo il numero di classi)
+soc <- unsuperClass(so, nClasses=3)
+cl <- colorRampPalette(c('yellow','black','red'))(100)
+plot(soc$map, col=cl)
