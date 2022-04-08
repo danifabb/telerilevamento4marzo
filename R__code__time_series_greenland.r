@@ -59,3 +59,14 @@ plot(en113, col=cl)
 difen <- en[[1]] - en[[13]]
 cldif <- colorRampPalette(c('blue','white','red'))(100)
 plot(difen, col=cldif)
+# importo dato dal blocco note a R
+source("R_inputcode.txt")
+[16:48] Duccio Rocchini
+rlist <- list.files(pattern="EN") # lapply(X,FUN)
+rimp <- lapply(rlist, raster) # stack
+en <- stack(rimp)
+# plot everything
+plot(en, col=cl)
+plotRGB(en, r=1, g=7, b=13, stretch="lin")
+
+
