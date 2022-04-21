@@ -67,6 +67,8 @@ rimp <- lapply(rlist, raster) # stack
 en <- stack(rimp)
 # plot everything
 plot(en, col=cl)
+# RGB: rosso gennaio, verde febbraio e blu marzo
 plotRGB(en, r=1, g=7, b=13, stretch="lin")
+
 
 
