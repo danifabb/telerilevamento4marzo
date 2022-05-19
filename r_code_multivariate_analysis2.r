@@ -33,3 +33,30 @@ geom_raster(pc1, mapping=aes(x=x, y=y, fill=PC1))
 g2 <- ggplot() +
 geom_raster(pc2, mapping=aes(x=x, y=y, fill=PC2))
 g1 + g2 + g3
+sd3 <- focal(nir, matrix(1/9, 3, 3), fun=sd)
+sd3 <- focal(pc1, matrix(1/9, 3, 3), fun=sd)
+library(viridis)
+ggplot() +
+geom_raster(sd3, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis()
+ggplot() +
+geom_raster(sd3, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option="cividis")
+im1 <- ggRGB(sen, 2, 1, 3) 
+im2 <- ggplot() +
+geom_raster(pc1, mapping=aes(x=x, y=y, fill=PC1)) 
+im3 <- ggplot() +
+geom_raster(sd3, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option="inferno") 
+sd5 <- focal(pc1, matrix(1/25, 5, 5), fun=sd)
+ggplot() +
+geom_raster(sd5, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option="inferno")
+
+### Calculate heterogeneity in a 5x5 window
+sd7 <- focal(pc1, matrix(1/49, 7, 7), fun=sd) 
+im5 <- ggplot() +
+geom_raster(sd7, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option="inferno") 
+im3 + im4 + im5 
+
