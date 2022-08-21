@@ -30,4 +30,41 @@ my_integer <- 42L #numero intero/ integer
 my_double <- 42.24 # numeri decimali
 # di default, ogni numero è considerato decimale, se scrivo 42 R lo considera decimale quindi devo specificare 42L perché sia intero
 my_character <- "universe" #character
-my_logical <- T
+my_logical <- T #valori bouleani, o logici, possono essere veri o falsi, corrispondono a 1 o 0
+# T = TRUE; F = FALSE
+
+class(my_numeric) #di che classe fa parte l'oggetto 42?
+class(my_double)
+class(my_integer)
+class(my_integer)
+class(my_logical)
+
+my_numeric_vector <- c(1,10, 49) #vettore numerico composto da 3 elementi
+my_numeric_vector
+my_character_vector <- c("a", "b", "c")
+my_character_vector
+my_character_vector <- c("a", "b", "c", x) #numero viene trasformato in carattere "42" (coercion)
+my_character_vector
+my_numeric_vector <- c(1, 10, 49, T) #T convertito in 1 numerico
+my_numeric_vector
+my_character_vector <- c(my_character_vector, x)
+my_character_vector                    
+my_logical_vector <- c(T, T, FALSE)
+my_logical_vector
+
+my_apples_vector <- c(50, 70, 80, 30, 150) #numero di mele raccolte al giorno, da lun a ven
+my_apples_vector
+my_oranges_vector <- c(40, 60, 80, 100, 80) #numero di arance lun/ven
+my_oranges_vector
+#voglio sapere quante mele e arance ho raccolto per ogni giornata es. numero di mele + arance raccolte il primo giorno
+my_fruit_vector <- my_oranges_vector + my_apples_vector
+my_fruit_vector
+my_oranges_vector <- c(40, 60, 80, 100) #rimuovo ultimo valore
+my_fruit_vector <- my_oranges_vector + my_apples_vector
+my_fruit_vector #siccome il secondo oggetto è più corto, vengono sommati l'ultimo valore del primo oggetto e il primo valore del secondo oggetto (si ricomincia daccapo): 150 + 40 = 190
+# Warning message: In my_oranges_vector + my_apples_vector : longer object length is not a multiple of shorter object length
+#attenzione: se i vettori sono di lunghezze l'uno multiplo dell'altro, non c'è neppure il warning, avviene automaticamente il "riciclo"
+my_numeric_vector <- 1:10 #sequenza numeri da 1 a 10
+10:1
+rep(c("a", "b", "c"), times = 2) #due chiamate di funzione una dentro l'altra
+rep(c("a", "b", "c"), each = 2)
