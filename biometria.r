@@ -103,3 +103,76 @@ is.numeric(oranges_vector) #domanda vero o falso
 is.character(oranges_vector)
 as.character(oranges_vector) #coercizione da numeric a character ovvero numeri tra virgolette
 as.logical(oranges_vector) #ogni valore doverso da 0 viene convertito in true
+
+character_vector <- c("a", "b")
+typeof(character_vector)
+is.character(character_vector)
+as.numeric(character_vector) # esce NA NA, ovvero nessuno valore, coercizione utilizzata male perché un character non può diventare un numero
+
+logical_vector <- c(T, F)
+as.integer(logical_vector)
+as.character(logical_vector)
+
+length(logical_vector)
+length(oranges_vector)
+length(1)
+length(logical()) # fa 0
+length(vector())
+length(c())
+
+apples_vector
+apples_wednesday <- apples_vector["Wednesday"] # seleziono unica giornata
+apples_wednesday
+apples_vector[c("Monday", "Friday")]
+
+# in R il primo elemento ha posizione 1
+apples_vector[1]
+apples_vector[5]
+apples_vector[length(apples_vector)] #estraiamo l'ultimo elemento, che ha posizione pari alla lunghezza
+apples_vector[1:3]
+apples_vector[3:1]
+apples_vector[c("Friday", "Monday")]
+apples_vector[-c(1, 3)] # sottraggo gli elementi 1 e 3, ottengo solo elementi 2, 4 e 5
+apples_vector[-(2:4)] # solo Mon e Fri
+apples_vector[-2:4] #errore: solo 0 può essere mischiato con valori negativi
+apples_vector[-5:-2] # solo lunedì
+selection_vector <- apples_vector > 80 # quali maggiore di 80?
+apples_vector[selection_vector]  
+apples_vector[apples_vector <= 40] # uguale deve andare sempre dopo > e <
+apples_vector[apples_vector == 40] #attenzione ai due uguali
+apples_vector[apples_vector != 40]
+
+# LE MATRICI: due dimensioni, x e y, ogni elemento è definito da una coppia di coordinate
+matrix(1:9, nrow = 3) #
+
+# cosa sono i numerini a margine tra []? Sono gli indici
+1:30
+-20:20 # il 25esiamo valore è 4
+# nella matrice ogni elemento è identificato da due coordinate, sempre tra []
+#      [,1] [,2] [,3]
+#[1,]    1    4    7
+#[2,]    2    5    8
+#[3,]    3    6    9
+
+garden <- c(10, 2) #due specie, della prima trovo 8 esemplari e 2 della seconda
+forest <- c(8, 3)
+hedgerow <- c(1, 12)
+community_matrix <- matrix(c(garden, forest, hedgerow), nrow = 3, byrow = TRUE)
+community_matrix
+
+species <- c("Parus major", "Erithacus rubecula")
+sites <- c("Garden", "Forest", "Hedgerow")
+colnames(community_matrix) <- species
+rownames(community_matrix) <- sites
+
+passer <- c(15, 2, 5)
+cbind(community_matrix, passer)
+community_matrix <- cbind(community_matrix, passer)
+
+park <- c(10, 1, 8)
+rbind(community_matrix, park)
+community_matrix <- rbind(community_matrix, park)
+
+colnames(community_matrix)[3] <- "Passer domesticus"
+rownames(community_matrix)[4] <- "Park"
+
