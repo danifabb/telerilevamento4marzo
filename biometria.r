@@ -120,12 +120,13 @@ length(logical()) # fa 0
 length(vector())
 length(c())
 
+#come estrarre uno o più elementi
 apples_vector
 apples_wednesday <- apples_vector["Wednesday"] # seleziono unica giornata
 apples_wednesday
 apples_vector[c("Monday", "Friday")]
 
-# in R il primo elemento ha posizione 1
+# in R il primo elemento ha posizione 1 (indicizzazione o subsetting)
 apples_vector[1]
 apples_vector[5]
 apples_vector[length(apples_vector)] #estraiamo l'ultimo elemento, che ha posizione pari alla lunghezza
@@ -154,6 +155,7 @@ matrix(1:9, nrow = 3) #
 #[2,]    2    5    8
 #[3,]    3    6    9
 
+#matrice di comunità es. tabella specie per sito
 garden <- c(10, 2) #due specie, della prima trovo 8 esemplari e 2 della seconda
 forest <- c(8, 3)
 hedgerow <- c(1, 12)
@@ -173,6 +175,31 @@ park <- c(10, 1, 8)
 rbind(community_matrix, park)
 community_matrix <- rbind(community_matrix, park)
 
-colnames(community_matrix)[3] <- "Passer domesticus"
+colnames(community_matrix)[3] <- "Passer domesticus" 
 rownames(community_matrix)[4] <- "Park"
+
+#lezione 4
+colnames(community_matrix) #vettore di tipo character
+colnames(community_matrix)[3]
+
+dim(community_matrix) # vettore integer di lunghezza 2, rappresentanti il numero di righe (primo numero sempre) e di colonne
+nrow(community_matrix)
+ncol(community_matrix)
+colSums(community_matrix) #vettore di tipo integer con ciacun elemento che ha il proprio nome
+rowSums(community_matrix) #quanti passeriformi abbiamo visto per sito in totale?
+
+rbind(community_matrix, Total = colSums(community_matrix))
+cbind(community_matrix, Total = rowSums(community_matrix)) #aggiungo totale alla tabella
+community_matrix + 2 # valore scalare applicato a ogni valore
+community_matrix*2
+community_matrix[1, 2] #seleziono/ estraggo elemento da tabella: sempre prima riga e poi colonna
+community_matrix[1, ] #intera prima riga
+community_matrix[1:2, ] #prima e seconda riga
+community_matrix[c(1, 3), ] # prima e terza riga
+
+community_matrix[-1, ] #manca la prima riga
+community_matrix[, "Parus major"] #vettore che corrisponde alla colonna Parus major
+community_matrix[2, "Parus major"]
+community_matrix[, 2:ncol(community_matrix)]
+
 
