@@ -68,3 +68,38 @@ my_numeric_vector <- 1:10 #sequenza numeri da 1 a 10
 10:1
 rep(c("a", "b", "c"), times = 2) #due chiamate di funzione una dentro l'altra
 rep(c("a", "b", "c"), each = 2)
+
+#lezione 3
+1:10
+seq(1, 10) #stessa cosa di riga precedente
+seq(1, 10, by = 2) #step by 2, tutti i numeri dispari compresi tra 1 e 10
+seq(10, 1, by = -2) # 10 8 6 4 2
+
+rep(1:2, times = 10)
+rep(1:2, each = 10)
+
+?seq # si apre pagina nel pannello di aiuto
+
+a <- seq(1, 10, 3)
+a
+seq(0, 1, .01) #non usare seq con i double, eccetto per certi casi dove è utile, come qui
+seq(1, 10, 2)
+help("rep")
+
+apples_vector <- c(20,50, 30, 40, 100)
+oranges_vector <- c(70, 70, 50, 20, 80)
+class(oranges_vector) #numeric, perché non ho messo L dopo i numeri, quindi no integer
+names(apples_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+apples_vector # assegno nome a ciascun elemento del vettore
+# Monday   Tuesday Wednesday  Thursday    Friday 
+       20        50        30        40       100 
+names(oranges_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+oranges_vector # assegno nome a ciascun elemento del vettore
+apples_vector + oranges_vector
+
+typeof(1.1:3)
+typeof(oranges_vector)
+is.numeric(oranges_vector) #domanda vero o falso
+is.character(oranges_vector)
+as.character(oranges_vector) #coercizione da numeric a character ovvero numeri tra virgolette
+as.logical(oranges_vector) #ogni valore doverso da 0 viene convertito in true
