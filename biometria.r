@@ -202,4 +202,36 @@ community_matrix[, "Parus major"] #vettore che corrisponde alla colonna Parus ma
 community_matrix[2, "Parus major"]
 community_matrix[, 2:ncol(community_matrix)]
 
+#fattore = tipo speciale di vettore integer
+#classificazione di piante in forme di crescita: fattore non ordinato
+plants_vector <- c("Tree", "Grass", "Forb", "Grass", "Tree")
+plants_vector # vettore di tipo character
+plants_factor <- factor(plants_vector)
+plants_factor # vettore di tipo factor: 3 livelli Forb Grass Tree, elencati in ordine alfabetico
+as.integer(plants_factor) # ottengo struttura nascosta 
+
+# factor ordinati: devo specificare l'ordine nella chiamata a factor
+temperature_vector <- c("Low", "High", "Medium", "High", "Low")
+# è comodo leggere il codice in verticale, puoi andare a capo
+temperature_factor <- factor(temperature_vector,
+                             ordered = T, 
+                             levels = c("Low", "Medium", "High"))
+#Levels: Low < Medium < High
+# oppure: levels = temperature_order <- c("Low", "Medium", "High")
+summary(temperature_factor) #ottengo le frequenze assolute con cui sono presenti i 3 elementi
+summary(temperature_factor) / length(temperature_factor) 
+#Low    Medium     High 
+   0.4    0.2    0.4
+summary(temperature_factor) / length(temperature_factor)*100
+# Low    Medium   High 
+    40     20     40 
+substrate_vector <- c("L", "S", "S", "L", "S")
+substrate_factor <- factor(substrate_vector) # 2 livelli
+levels(substrate_factor) # "L", "S" tra virgolette perché non si tratta del fattore stesso, bensì delle labels
+# voglio dare il nome esteso alle categorie, per maggiore chiarezza
+levels(substrate_factor) <- c("Limestone", "Siliceous")
+# così lo scrivo solo 1 volta per ciascun livello invece che tante volte rischiando di sbagliare
+
+levels(substrate_factor) <- c("Limestone", "Siliceous")
+# così lo scrivo solo 1 volta per ciascun livello invece che tante volte rischiando di sbagliare
 
