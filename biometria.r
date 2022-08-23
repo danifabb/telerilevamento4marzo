@@ -235,3 +235,105 @@ levels(substrate_factor) <- c("Limestone", "Siliceous")
 levels(substrate_factor) <- c("Limestone", "Siliceous")
 # così lo scrivo solo 1 volta per ciascun livello invece che tante volte rischiando di sbagliare
 
+#dataframes = strutture di dati rettangolari/ tabelle eterogenee
+dat <- data.frame(
+  id = 1:6,
+  name = c("Eokochia saxicola", "Cytisus aeolicus", "Anthemis aeolica", "Centaurea aeolica", "Silene hicesia", "Genista tyrrhena"),
+  has_legumes = c(F, T, F, F, T, F),
+  population_size = c(50, 2000, 5000, 10000, 200, 3000),
+  growth_form = factor(c("Herb", "Tree", "Herb", "Shrub", "Herb", "Tree" )))
+# growth_form è factor perché ha categorie definite/ livelli
+
+#lezione 5
+
+dim(dat)
+nrow(dat)
+ncol(dat)
+summary(dat)
+
+(3+4)/2
+(2000 + 3000)/2 # mediana per la popolation_size
+# non sei riuscita a calcolare i quartili però (???) 
+
+class(dat)
+str(dat)
+
+dat["1", ] #estraggo la prima riga
+dat[1, ]
+dat[1:2, ]
+dat[c("1", "2"), ] #ottengo dataframe con le prime due righe
+dat[ , 2] # ottengo un vettore unidimensionale, non più un dataframe
+is.vector(dat[ , 2])
+dat[ , 2, drop = F] # gli ordiniamo di non droppare la struttura e quindi il risultato assomiglia a dataframe
+is.vector(dat[ , 2, drop = F])
+is.data.frame(dat[ , 2, drop = F])
+dat["name"] # ottengo dataframe
+dat[, "name"] # ottengo vettore
+dat["1"] # non funziona, ci vuole la virgola
+dat[["name"]] # ottengo un vettore
+dat[c("name", "id")] #dataframe delle prime due colonne
+dat[1:2, c("id", "name")] # prime due righe e prima due colonne
+dat[c("5", "6"), c("id", "name")] 
+dat$id # vettore contenente valori della colonna
+dat$has_legumes
+dat$has_legumes == T #posso testare se questa colonna è true o false
+dat[dat$has_legumes == T, ] # estraggo righe che soddisfano questa condizione: solo le leguminose vengono selzionate, ovvero Cytisus e Genista
+dat[dat$has_legumes != T, ]
+dat[dat$population_size < 3000, ]
+dat <- dat[, -4] # tolgo quarta colonna
+dat$growth_form <- NULL # tolgo ultima colonna
+dat
+
+#aggiungere colonne
+cbind(dat, fid = 1:6) 
+# non si può fare con le righe, perché non si può avere un vettore con tipi diversi di dati
+# altro modo per aggiungere colonna, 
+dat$id.2
+dat$id.2 <- 1:6 # assegnazione
+dat
+
+#aggiungere righe: creo un nuovo dataframe da aggiungere in fondo
+new_data <- data.frame(
+  id = 7,
+  name = "Limonium minutiflorium",
+  has_legumes = F,
+  id.2 =7)
+rbind(dat, new_data) # riga aggiunta in modo estemporaneo
+dat <- rbind(dat, new_data) # riga assegnata a dataframe
+dat
+
+# le liste: monodimensionali ma eterogenee, possono contenere tanti tipi di dati, matrici, dataframe, ecc
+vec <- 1:10
+mat <- matrix(1:9, ncol = 3)
+dat <- mtcars #dataaframe già caricato in R
+my_list <- list(vec, mat, dat) 
+my_list <- list(my_vector = vec, my_matrix = mat, my_dataframe = dat) 
+
+list(my_list, 1:10) # lista che sta all'interno della lista; l'intera lista è la prima componente del vettore, mentre la seconda componente è solo il vettore 1:10
+# due modi per aggiungere elementi alla lista
+my_list[["my_other_vector"]] <- c("blah", "blah", "blah") # ho aggiunto un quarto vettore
+my_list$my_last_vector <- c(T, F, T)
+
+str(my_list)
+my_list[[3]] <- NULL #doppie parentesi indicizzano elementi all'interno della lista
+my_list
+str(my_list)
+my_list[["my_vector"]]
+my_list[[1]]
+my_list[[1]][3] #seleziono terzo elemento della prima componente
+my_list[[1]][3:6]
+
+names(my_list) <- c("A", "B", "C", "D") # cambio i nomi o posso anche crearli da 0
+str(my_list)
+
+my_list2 <- list(1:2, T, c("hello", "world"))
+names(my_list2) <- c("Prima", "Seconda", "Terza")
+str(my_list2)
+
+c(my_list, my_list2) # unisco le due liste, lista nuova formata da 7 componenti
+list(my_list, my_list2) # creo 2 compoenti della lista, che sono a loro volta liste --> due liste annidate in una ulteriore lista
+str(c(my_list, my_list2))
+str(list(my_list, my_list2))
+
+str(dat)
+
