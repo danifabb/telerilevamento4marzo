@@ -337,3 +337,63 @@ str(list(my_list, my_list2))
 
 str(dat)
 
+# lezione 6
+class(NULL)
+typeof(NULL) 
+as.null(1:3) #lista vuota
+is.null(NULL)
+is.null(1:3)
+
+list() #lista vuota
+is.null(pairlist()) #tipo speciale di lista
+is.null(vector())
+pairlist()
+?pairlist
+str(list())
+str(pairlist())
+  
+length(NULL) #0
+
+#NA = not applicable/ not available = missing data in una cella vuota (oppure che non viene letta)
+# se sommo una serie di dati e uno di essi è NA, il risultato sarà NA
+
+class(NA) #logical è il tipo di default, poi può essere trasformato negli altri tipi
+typeof(NA)
+NA_character_ #coercion
+class(NA_character_)
+NA_integer_
+vec <- c(1, NA, 4, 6, 10)
+is.na(vec)
+10 + vec # se sommo valore singolo a vettore di n elementi, numero viene sommato a ogni elemento
+10 + NA
+
+sum(1:3) # 1 + 2 + 3
+sum(c(1, 2, 3 , NA)) #NA, R ci avvisa del valore mancante
+sum(c(1, 2, 3 , NA), na.rm = T) #rimuovo NA prima di fare operazione
+na.omit(c(1, 2, 3, NA)) # pulire dataset da NA
+# [1] 1 2 3
+# attr(,"na.action") #l'elemento su cui è compiuta azione omit è il quarto
+# [1] 4
+# attr(,"class")
+# [1] "omit"
+
+na.omit(c(4, 6, NA, 11, 16))
+FALSE & NA #& è intersezione di due insiemi in logica --> il risultato è sempre falso
+TRUE | NA
+length(NA)
+
+NaN #not a number
+0/0 #indefinito = NaN
+length(NaN)
+class(NaN) #numeric
+typeof(NaN) #double: inconsistenza del linguaggio
+is.nan(NA)
+is.nan(0/0)
+0/0 == NaN
+
+Inf
+-Inf
+1/0 #Inf
+-1/0 #-Inf
+class(Inf) #numeric
+
