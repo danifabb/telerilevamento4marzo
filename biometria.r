@@ -397,3 +397,25 @@ Inf
 -1/0 #-Inf
 class(Inf) #numeric
 
+#installare e caricare pacchetti
+install.packages("swirl")
+library(swirl)
+swirl()
+version
+rm(list = ls())
+
+install.packages("vegan")
+library(vegan)
+vignette(package = "vegan")
+vignette("intro-vegan")
+
+sqrt(log(42)) #annido due funzioni, oppure:
+log_42 <- log(42) #valore intermedio
+sqrt(log_42)
+
+#tante funzioni annidate sono difficili da leggere, oppure diventa lunga
+#pipes
+42 |> log() #42 viene lanciato nella funzione log
+42 |> log() |> sqrt()
+
+# se no si può usare %>% con il pacchetto magrittr
