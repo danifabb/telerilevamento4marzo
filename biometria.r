@@ -439,3 +439,25 @@ cheer_me <- function(nome) {
  # cheer_me è il nome della funzione e cheer_string è la stringa che creiamo all'interno della funzione, poi diamo in pasto cheer_string alla funzione print
 cheer_me("Daniela")
 m <- cheer_me("Daniela")
+
+#lista di argomenti per paste(..., sep = " ", collapse = NULL, recycle0 = F)
+
+#analisi dati
+
+dune <- read.table("data/dune.txt") # cover class values of 30 species at 20 sites
+# le stringhe vengono importate automaticamente come characters, ma noi li vogliamo come fattori ordinabili --> specifichiamo che vogliamo fattori
+# moisture e manure vengono considerati integer, ma non era quello che volevamo; 
+dune.env <- read.csv("data/dune_env.csv", 
+                     stringsAsFactors = T)
+rm(dune.env)
+dune.env <- read.csv("data/dune_env.csv")
+
+str(dune)
+str(dune.env)
+# moisture e manure vengono considerati integer, ma non era quello che volevamo
+library(vegan)
+?dune
+
+dune.env$Moisture <- factor(dune.env$Moisture, ordered = T)
+dune.env$Manure <- factor(dune.env$Manure, ordered = T)
+dune.env$Use <- factor(dune.env$Use, ordered = T, levels = c("Hayfield", "Haypastu", "Pasture"))
