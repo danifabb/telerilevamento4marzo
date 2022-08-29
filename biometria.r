@@ -419,3 +419,23 @@ sqrt(log_42)
 42 |> log() |> sqrt()
 
 # se no si può usare %>% con il pacchetto magrittr
+
+#lezione 7
+add_two <- function(x) {
+  x_plus_two <- x + 2
+  return(x_plus_two)
+}
+
+add_two(5)
+n <- add_two(5) #lo chiamo n così viene salvato nell'environment
+n
+n
+rm(list=ls())
+
+cheer_me <- function(nome) {
+  cheer_string <- paste("Hello", nome, sep = " ")
+  print(cheer_string)
+}
+ # cheer_me è il nome della funzione e cheer_string è la stringa che creiamo all'interno della funzione, poi diamo in pasto cheer_string alla funzione print
+cheer_me("Daniela")
+m <- cheer_me("Daniela")
