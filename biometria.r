@@ -461,3 +461,50 @@ library(vegan)
 dune.env$Moisture <- factor(dune.env$Moisture, ordered = T)
 dune.env$Manure <- factor(dune.env$Manure, ordered = T)
 dune.env$Use <- factor(dune.env$Use, ordered = T, levels = c("Hayfield", "Haypastu", "Pasture"))
+#ATTENTA, qui ti viene NA nello Use e non sai perché
+#lezione 8
+#cicli = tecnica per iterare un processo
+#cicli for: si sa già numero di iterazioni che si faranno
+
+for (i in 1:10) {
+     print(i)
+}
+
+library(vegan)
+data(dune) #per caricare dati da pacchetto
+sr <- vector() # creiamo oggetto che verrà modificato durante le iterazioni del ciclo; calcoliamo species richness
+
+#vogliamo "ciclare" attraverso dune e attraversare ciascuna riga/plot/sito, calcolandone il numero di specie 
+#uso sum, in modo che si faccia la somma del numero di specie per riga: selezioniamo ogni riga e facciamo la somma dei valori contenuti in essa
+#nella prima celletta ci sarà la ricchezza del primo plot (riga), la seconda celletta sarà la ricchetta di specie del secondo plot, ecc
+#vogliamo calcolare sr, ma abbiamo abbondanza di specie in questa tabella
+#quindi valori più grandi dei soli 1 e 0 che ci servono --> vanno ridotti a 1 i valori maggiori di 1 (binarizzare)
+
+#uso logica bouleana: quali valori sono maggiori di 0? Poi sommo i T per avere ricchezza di specie (in questo modo tutti i valori maggiori di 1 diventano 1 e poi vengono sommati)
+
+
+sum(dune[1, ] > 0)  #sono selezionati come veri i valori maggiori di 0 --> valori di presenza della specie
+
+for (i in 1:nrow(dune)) {
+  sr[i] <- sum(dune[i, ] > 0) 
+} # la ricchezza di specie di i (riga) è la somma di tutti i valori presenti in i
+
+sr # ricchezza di specie per riga/ per sito
+#creo funzione personalizzata con all'interno un ciclo per avere pronta funzione che calcola sr senza scrivere tutto ogni volta
+calculate_sr <- function(df) {
+  sr <- vector()
+  for (i in 1:nrow(df)) {
+  sr[i] <- sum(df[i, ] > 0) 
+  }
+  return(sr)
+  
+} #df è segnaposto, è dataframe generale a cui corrisponderà il dataframe di cui ci serve sr
+
+calculate_sr(df = dune) #sostituisco a df un oggetto reale
+
+sr_dune <- calculate_sr(df = dune) 
+
+
+
+
+
