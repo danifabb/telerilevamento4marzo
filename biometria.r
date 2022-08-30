@@ -452,8 +452,8 @@ dune.env <- read.csv("data/dune_env.csv",
 rm(dune.env)
 dune.env <- read.csv("data/dune_env.csv")
 
-str(dune)
-str(dune.env)
+str(dune) #matrice di comunità, livelli di copertura (abbondanza di specie) per 30 specie su 20 siti
+str(dune.env) #dataframe con 5 variabili, relative agli stessi 20 siti di cui sopra
 # moisture e manure vengono considerati integer, ma non era quello che volevamo
 library(vegan)
 ?dune
@@ -568,6 +568,80 @@ boxplot(sr ~ Use,
         data = dune.env,
         xlab ="Type of Use",
         ylab = "Species richness")
+
+#lezione 9 
+#conditionals: strumenti che permettono un controllo del flusso di dati 
+#serie di domande/ bivi a cui il programma prende una strada o l'altra
+
+#un numero è maggiore di un altro? 
+x <- 100
+
+if(x > 10) {
+  print(paste(x, "is greater than 10"))
+} #le istruzioni all'interno della condizione vengono eseguire
+
+x <- 5 #non viene scritto nulla
+
+#dicotomia
+if(x > 10) {
+  print(paste(x, "is greater than 10"))
+} else {
+print(paste(x, "is less than 10"))
+} #se non viene soddisfatta la prima opzione, verrà eseguita la seconda
+
+#se ci sono tre o più condizioni?
+x <- 10
+
+if(x > 10) {
+  print(paste(x, "is greater than 10"))
+} else if (x == 10) {
+  print(paste(x, "is equal to 10"))
+} else {
+  print(paste(x, "is less than 10"))
+} 
+
+x<0
+x<10
+x <- 9
+
+#per controllare se un numero intero è pari o dispari, vediamo se è divisibile per 2, o se c'è il resto di 1
+#se il risultato di x diviso 2 dà il resto di 1, print T
+is_odd <- function(x) {
+  if(x %% 2 == 1) {
+    print(T)
+  } else {
+    print(F)
+  }
+}
+  
+is_odd(4) 
+is_odd(5)
+
+#back to analysis
+str(dune)
+str(dune.env)
+sr
+sr_dune
+sr <- specnumber(dune) #calcolare la ricchezza di specie per ogni sito (converte già le abbondanza in assenza/ presenza)
+sr
+dune.env$sr <- sr
+
+
+boxplot(sr ~ Management,
+        data = dune.env,
+        xlab ="Management Type",
+        ylab = "Species richness") #species richness in funzione del Management
+#NM ha la ricchezza di specie minore
+#SF è quello che ha variabilità maggiore, va da 5 a 13
+
+#scatterplot con due variabili continue
+# sr è dipendente da A1 (variabile indipendente)
+plot(sr ~ A1,
+     data = dune.env,
+     xlab = "Thickness of A1 soil horizon (cm)",
+     ylab ="Species richness"
+    )
+#maggior parte dei valori sono attorno a A1 = 4 e hanno sr = 10-13
 
 
 
