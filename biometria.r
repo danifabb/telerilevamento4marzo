@@ -504,6 +504,75 @@ calculate_sr(df = dune) #sostituisco a df un oggetto reale
 
 sr_dune <- calculate_sr(df = dune) 
 
+summary(dune) #non ci dice nulla di interessante
+summary(dune.env) #più interessante
+#A1: media, mediana e quartile più vicini al minimo che al massimo
+#per i fattori, il summary ci dà le frequenze assolute es. per il valore 1 abbiamo 7 osservazioni
+#grafico che mostra distribuzione carattere A1 = istogramma
+
+hist(dune.env$A1)
+#frequenza dei valori da 2 a 4, ecc
+#e se vogliamo più o meno colonne? Aumento breaks 
+hist(dune.env$A1, 
+     xlab = "Thickness of soil A1 horizon (cm)",
+     main = "",
+     breaks = 10)
+#maggior parte delle osservazioni tra 2 e 6
+
+man_counts <- table(dune.env$Management) #tabella di contingenza: distribuzione univariata
+man_counts
+barplot(man_counts,
+        xlab = "Management type",
+        ylab = "N° of plots") 
+
+counts <- table(dune.env$Manure,
+      dune.env$Management) #tabella di contingenza/ matrice: distribuzione bivariata
+# 0 Manure c'è solo nei Natural Meadows perché non ha senso azotare dei terreni che non sono produttivi; in NM le altre frequenze per livelli di Manure > 0 sono tutte a 0
+# 1 Manure: Biological Farming, non azoto tanto
+# 3 Manure: solo in standard Farming
+barplot(counts,
+        xlab = "Management type",
+        ylab = "Manure quantity",
+        main = "Plot distribution by Manure and Management",
+        legend = rownames(counts),
+        xlim = c(0, 6))
+# sull'asse delle x abbiamo Management, all'interno delle colonne vediamo la distribuzione della seconda variabile
+
+#calcoliamo le frequenze congiunte relative
+prop.table(counts)
+
+#calcoliamo le frequenze condizionate di Management, rispetto a Manure (variabile condizionante) 
+prop.table(counts, margin = 1) # 1 sono le righe e 2 sono le colonne
+#il 100% delle osservazioni con valore di Manure = 0 corrispondono al tipo di Management NM
+# per Manure = 1, 2/3 delle osservazioni corrispondono a BF e 1/3 a HF
+# ora facciamo il contrario: frequenza condizionate di Management rispetto a Manure
+prop.table(counts, margin = 2)
+# il 100% delle osservazioni NM corrispondono al livello 0 di Manure (come cambiamo frequenze di Manag a seconda dei livelli di Manure)
+
+#una variabile quantitativa sull'asse x e una qualitativa sull'asse y (distribuzione variab quantitativa rispetto a delle categorie)
+
+sr_dune
+boxplot(sr_dune ~ dune.env$Use,
+        xlab ="Type of Use",
+        ylab = "Species richness")
+#distribuzione della ricchezza di specie attraverso i tipi diversi di uso
+#~ è 126 e Alt 
+library(vegan)
+specnumber(dune) #formula per calcolare species richness in vegan
+#vedo la species richness per sito/ per riga
+dune.env$sr <- specnumber(dune) #creo nuova riga per species richness
+str(dune.env)
+
+
+boxplot(sr ~ Use,
+        data = dune.env,
+        xlab ="Type of Use",
+        ylab = "Species richness")
+
+
+
+
+
 
 
 
