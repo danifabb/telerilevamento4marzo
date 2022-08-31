@@ -643,6 +643,37 @@ plot(sr ~ A1,
     )
 #maggior parte dei valori sono attorno a A1 = 4 e hanno sr = 10-13
 
+png("outputs/sr_vs_a1.png", width = 1000, height = 1000, res = 300) #sono pixel
+plot(sr ~ A1,
+     data = dune.env,
+     xlab = "Thickness of A1 soil horizon (cm)",
+     ylab = "Species richness")
+dev.off() #trial and error per i parametri
+
+dune_env_head <- head(dune.env, 8) #di default restituisce le prime 6 righe, poi lo modifico
+
+write.table(dune_env_head, 
+            "outputs/dune_env_head.txt")
+
+write.csv(dune_env_head,
+          "outputs/dune_env_head.csv", row.names = F)#così non c'è la colonna inutile
+
+vec <- 1:100
+head(vec)
+head(vec, 10)
+
+library(vegan)
+dune_pa <- decostand(dune, method = "pa") #trasformo matrice di abbondanza in matrice di assenza/presenza
+str(dune)
+
+#specie più frequenti?
+specnumber(dune_pa, MARGIN = 2) #somma lungo le colonne = frequenza assoluta di ciascuna specie nel nostro dataset (sommo la presenza di una specie in tutti i siti)
+
+
+
+
+
+
 
 
 
