@@ -668,6 +668,25 @@ str(dune)
 
 #specie più frequenti?
 specnumber(dune_pa, MARGIN = 2) #somma lungo le colonne = frequenza assoluta di ciascuna specie nel nostro dataset (sommo la presenza di una specie in tutti i siti)
+#tabella che mostra la frequenza di specie a seconda dell'uso: come faccio a sapere se i differenti usi del terreno influenzano la distribuzione di specie?
+#aggreghiamo le due variabili: somma delle presenze delle due specie nelle tre categorie di uso
+#es. somma Scorautu per le righe Hayfield
+species_by_use <- aggregate(dune_pa[c("Scorautu", "Trifrepe")],
+                            by = list(dune.env$Use),
+                            FUN = "sum")
+#test del chi-quadrato
+
+# dplyr per fare tabella in maniera più semplice (tidyverse)
+
+chisq.test(species_by_use[ , -1]) #p-value 0.89 alto e non significativo; non possiamo rifiutare l'ipotesi nulla che le frequenze delle due specie siano analoghe
+#infatti sono analoghe: le frequenze sono molto simili
+#p-value ci dà significatività statistica, soglia è 0.05-0.01
+#se avessimo avuto un p-value significativo avremmo potuto dire che le frequenze delle due specie nei diversi tipi di uso sono indipendenti 
+#quando è al di sotto di 0.05 è statisticam significativo e si può rigettare l'ipotesi nulla --> in quel caso ci sarebbe differenza evidente nelle frequenze
+#qui le frequenze sono quasi uguali, le differenze sono dovute al caso
+#la loro presenza nei tre gruppi è analoga, probabilmente vivono in habitat simili
+
+
 
 
 
