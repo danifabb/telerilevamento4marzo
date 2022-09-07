@@ -689,6 +689,118 @@ chisq.test(species_by_use[ , -1]) #p-value 0.89 alto e non significativo; non po
 # se le frequenze sono uguali, le due variabili sono indipendenti e una non influenza l'altra, maybe?
 
 #lezione 10
+library(vegan)
+data(dune)
+data(dune.env)
+dune.env$sr <- specnumber(dune)
+str(dune.env)
+
+mat <- matrix(c(2, 9, 8, 1), ncol = 2) #facciamo finta di avere 2 specie in colonna e 2 siti in riga
+#quante volte ciascuna delle due specie appare in un habitat o nell'altro
+#distribuzione delle due specie è indipendete? la troviamo negli stessi contesti, o se c'è una non c'è l'altra?
+#se si trovano negli stessi habitat potrebbero avere caratteristiche simili, o avere mutualismo
+# se invece le due specie si escludono non le troviamo negli stessi contesti
+
+colnames(mat) <- c("sp1", "sp2")
+rownames(mat) <- c("habitat1", "habitat2")
+mat
+#in maniera intuitiva si capisce che le due specie hannp distribuzione indipendente, ovvero compaiono in habitat diversi, ma va testato!
+
+chisq.test(mat) #p-value = 0.007 -> risultato significativo se consideriamo alfa = 0.05. Posso rifiutare l'ipotesi nulla (frequenze analoghe)
+#considero vera l'ipotesi alternativa, ovvero le frequenze sono diverse
+#modifico la matrice
+mat <- matrix(c(2, 9, 1, 8), ncol=2) #prevedo frequenze non indipendeti tra loro, bensì simili nei due habitat (si comportano nella stessa maniera, troviamo una specie dove troviamo l'altra)
+
+chisq.test(mat) #p-value = 1 -> risultato non significativo, non posso rifiutare l'ipotesi nulla
+
+#l'ipotesi nulla può cambiare, ma nel caso di chisq.test l'ipotesi nulla è "distribuzione simile"
+#mentre se p-value è significativo abbiamo distrib indip
+
+#t test (t di Student)
+#valori di ricchezza di specie tra un tipo di Management e un altro sono significativamente differenti
+boxplot(sr ~ Management, data = dune.env)
+#plot che appartengono a HF sono particolarmente ricchi di specie
+# differenza significativa nel numero di specie dei plot HF rispetto agli altri?
+#vogliamo testare se questa differenza sia associata o meno al tipo di gestione
+# t test per vedere se c'è differenza significativa tra HF e gli altri tre assieme
+
+t.test(dune.env$sr[dune.env$Management == "HF"], 
+       dune.env$sr[dune.env$Management != "HF"],
+       alternative = "greater")
+# vettore di ricchezza di specie = di lunghezza 20, abbiamo un valore di ricchezza specifica per ogni plot
+# vettore viene separato in due gruppi da una condizione logica/ booleana
+#da dune.env selezioniamo solo gli elementi con Management HF
+#quindi prendo in considerazione solo sr dei plot dove si fa HF
+#il secondo gruppo è formato da sr dei plot che non sono HF
+dune.env$sr[dune.env$Management == "HF"] #di lunghezza 5
+dune.env$sr[dune.env$Management != "HF"] #di lunghezza 15
+#testiamo se il valori medio del primo gruppo HF è più grande del valore medio del secondo gruppo (alternativa)
+#alternative hypothesis: true difference in means is greater than 0 (differenza significativa e non dovuta al caso)
+# p-value = 0.0001 è significativo -> dobbiamo rifiutare l'ipotesi nulla
+#consideriamo vera l'alternativa, ovvero le due popolazioni sono tra di loro differenti (o meglio, i loro valori medi sono differenti)
+#intervallo di confidenza: 2.38 - Inf
+#stima dei valori medi delle due popolazioni:
+#plot HF hanno in media 12.6 specie e altri plot hanno in media 8.93 sp
+
+#se invece avessi messo "less" invece che "greater" sarebbe venuto p-value non significativo
+#perché stavo testando se il valore medio del primo gruppo fosse più piccolo del valore medio del secondo gruppo
+
+#test di correlazione lineare
+plot(dune.env$A1,
+     dune.env$sr)
+cor.test(dune.env$A1,
+         dune.env$sr,
+         alternative = "less") #testo se c'è correlaz negativa tra le due variabili numeriche
+# p-value è 0.18 -> correlazione non è significativa, non possiamo rifiutare ipotesi nulla
+#intervallo di confidenza: -1.0000 - 0.17 -> il fatto che passi da neg a pos è altro indice di incertezza
+#stima del valore di correlazione dal nostro campione: -0.22 -> correlazione negativa non è significativa
+
+cor.test(dune.env$A1,
+         dune.env$sr,
+         alternative = "greater") #p-value = 0.82
+
+plot(mtcars$disp, 
+     mtcars$hp) #motore di dim maggiori -> maggiore horsepower?
+#suppongo correlazione positiva tra i due
+dev.off()
+cor.test(mtcars$disp, 
+         mtcars$hp,
+         alternative = "greater")
+3.571e-08 == 0.00000003571 #notazione scientifica *10(-8)
+# p-value piccolissimo -> valore significativo, considero vera ipotesi alternativa
+# correlazione significativa, di 0.79
+
+#modello di regressione per le due variabili: di quanto aumentano i cavalli rispetto a aumento unitario di dimensioni?
+#e quanto viene spiegata la variabilità della variab dipendente?
+mod <- lm(hp ~ disp, data = mtcars) #a sinistra della tilde mettiamo variabile dipendente
+summary(mod)
+#residui/ scarti: distanze verticali tra valori osservati e valori predetti dal modello
+#gli scarti si distribuiscono in maniera normale? probabilmente no, la distribuzione sembra essere spostata a destra 
+#perché nel summary a 5 punti, il valore minimo è -48 e il massimo è 157 -> coda di dx molto lunga
+#il primo quartile è più del doppio del secondo: -28 e 13
+#probs il modello di regress lin non è il migliore per descrivere i dati, ma ci accontentiamo
+
+# disp = coeff ang = 0.44; non più 0.79, perché tengo conto anche dell'intercetta
+#coeff ang = incremento di y per ogni unità di incremento di x
+#valori di p-value = Pr sono significativi per intercetta e coeff ang
+#adjusted R^2 = 0.61 quanta variabilità di hp è spiegata dal modello
+#p-value per disp è molto significativo -> rifiuto ipotesi nulla, so che coeff ang è diverso da 0
+#se R^2 è troppo vicino a 1, o c'è stato un errore, o il modello è troppo specifico
+#modello che non può essere usato il di fuori del nostro caso/ dataset -> overfitting
+
+str(mod) #per gurdare cosa significano tutti i valori nel summary
+#sovrapponiamo retta allo scatter plot
+abline(mod$coefficients[1], mod$coefficients[2])
+
+#Shapiro's normality test
+#used to determine whether the data are normally distributed
+hist(dune.env$sr) #istogramma riccheezza di specie
+shapiro.test(dune.env$sr) #p-value = 0.56 -> valore non significativo, non posso rifiutare ipotesi nulla
+#distribuzione è normale
+hist(dune.env$A1)
+shapiro.test(dune.env$A1) # p-value = 0.0003 -> risultato significativo, rifiuto ipotesi negativa
+#distribuz non è normale
+
 
 
 
