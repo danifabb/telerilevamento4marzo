@@ -678,13 +678,17 @@ species_by_use <- aggregate(dune_pa[c("Scorautu", "Trifrepe")],
 
 # dplyr per fare tabella in maniera più semplice (tidyverse)
 
-chisq.test(species_by_use[ , -1]) #p-value 0.89 alto e non significativo; non possiamo rifiutare l'ipotesi nulla che le frequenze delle due specie siano analoghe
+chisq.test(species_by_use[ , -1]) #p-value 0.89 alto e non significativo; non possiamo rifiutare l'ipotesi nulla che le frequenze delle due specie siano analoghe/ uguali
 #infatti sono analoghe: le frequenze sono molto simili
 #p-value ci dà significatività statistica, soglia è 0.05-0.01
-#se avessimo avuto un p-value significativo avremmo potuto dire che le frequenze delle due specie nei diversi tipi di uso sono indipendenti 
+#se avessimo avuto un p-value significativo avremmo potuto dire che le frequenze delle due specie nei diversi tipi di uso sono tra loro indipendenti (No in realtà? quella è l'ipotesi nulla?)
 #quando è al di sotto di 0.05 è statisticam significativo e si può rigettare l'ipotesi nulla --> in quel caso ci sarebbe differenza evidente nelle frequenze
 #qui le frequenze sono quasi uguali, le differenze sono dovute al caso
 #la loro presenza nei tre gruppi è analoga, probabilmente vivono in habitat simili
+# distribuzione delle due specie nei tre gruppi è simile
+# se le frequenze sono uguali, le due variabili sono indipendenti e una non influenza l'altra, maybe?
+
+#lezione 10
 
 
 
