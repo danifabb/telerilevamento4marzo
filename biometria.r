@@ -31,7 +31,7 @@ my_double <- 42.24 # numeri decimali
 # di default, ogni numero è considerato decimale, se scrivo 42 R lo considera decimale quindi devo specificare 42L perché sia intero
 my_character <- "universe" #character
 my_logical <- T #valori bouleani, o logici, possono essere veri o falsi, corrispondono a 1 o 0
-# T = TRUE; F = FALSE
+# T = TRUE; F = FALSE 
 
 class(my_numeric) #di che classe fa parte l'oggetto 42?
 class(my_double)
