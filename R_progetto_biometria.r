@@ -49,4 +49,72 @@ BCI <- BCI[-(matrix_na[ , 1]), ] #elimino le stesse righe nella matrice di comun
 
 nrow(BCI_env) #47
 
+nrow(BCI)
+
+#distribuzione univariata
+
+#caratteri quantitativi
+hist(BCI_env$UTM.EW,
+     xlab = "UTM coordinates (zone 17N) East-West",
+     main = "",
+     breaks = 10) #10 
+
+hist(BCI_env$UTM.NS,
+     xlab = "UTM coordinates (zone 17N) North-South",
+     main = "",
+     breaks = 5) #cosa è un density plot?
+
+hist(BCI_env$Precipitation,
+     xlab = "Precipitation (mm/year)",
+     xlim = c(2200, 2800),
+     main = "")
+
+hist(BCI_env$Elevation,
+     xlab = "Elevation (m)",
+     xlim = c(80, 160),
+     main = "")
+
+hist(BCI_env$EnvHet,
+     xlab = "Environmental Heterogeneity (Simpson)",
+     main = "",
+     breaks = 8) #indice che va da 0 a 10
+
+png("outputs/environmental_heterogeneity.png", width = 1200, height = 1000, res = 300)
+hist(BCI_env$EnvHet,
+     xlab = "Environmental Heterogeneity (Simpson)",
+     main = "",
+     breaks = 8)
+dev.off()
+
+?hist
+
+#caratteri qualitativi
+
+agecat <- table(BCI_env$Age.cat)
+barplot(agecat,
+        xlab = "Forest age category",
+        ylab = "N° of plots")
+
+habitat <- table(BCI_env$Habitat)
+habitat
+barplot(habitat,
+        xlab = "Habitat",
+        ylab = "N° of plots")
+
+stream <- table(BCI_env$Stream)
+stream
+barplot(stream,
+        xlab = "River",
+        ylab = "N° of plots")
+
+jpeg("outputs/habitat.jpeg", width = 2000, height = 1200, res = 300)
+habitat <- table(BCI_env$Habitat)
+barplot(habitat,
+        xlab = "Habitat",
+        ylab = "N° of plots")
+dev.off()
+
+
+
+
 
