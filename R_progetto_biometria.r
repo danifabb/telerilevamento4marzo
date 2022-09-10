@@ -114,6 +114,58 @@ barplot(habitat,
         ylab = "N° of plots")
 dev.off()
 
+BCI_pa <- decostand(BCI, method = "pa") #trasformo matrice di abbondanza in matrice di assenza/presenza
+View(BCI_pa)
+head(BCI_pa)[, 1:5] 
+
+sr <- specnumber(BCI_pa) #ricchezza di specie per sito
+View(sr) #es. nella prima osservazione abbiamo incontrato 93 specie
+
+BCI_env$sr <- sr #add it to the environmental variables dataframe as a new column
+str(BCI_env)
+
+#sr_1 <- specnumber(BCI)
+#sort(specnumber(BCI, MARGIN = 2))
+
+plot(BCI_env$UTM.EW,
+     BCI_env$sr) 
+cor.test(BCI_env$UTM.EW,
+         BCI_env$sr,
+         alternative = "greater") #p-value = 0.88 e intervallo di confidenza -0.4009874  1.0000000 (passa da neg a pos - altra fonte di incertezza)
+
+#tuttavia, correlazione -18 è leggermente negativa -> provo alternativa "less"
+
+plot(BCI_env$UTM.EW,
+     BCI_env$sr) 
+cor.test(BCI_env$UTM.EW,
+         BCI_env$sr,
+         alternative = "less") #p-value = 0.12, sempre non significativo
+
+plot(BCI_env$UTM.NS,
+     BCI_env$sr) 
+cor.test(BCI_env$UTM.NS,
+         BCI_env$sr,
+         alternative = "greater") #p-value = 0.26
+
+plot(BCI_env$Precipitation,
+     BCI_env$sr) 
+cor.test(BCI_env$Precipitation,
+         BCI_env$sr,
+         alternative = "greater") #la deviazione standard (ovvero la variabilità) è 0, perché abbiamo un unico valore
+
+plot(BCI_env$EnvHet,
+     BCI_env$sr) 
+cor.test(BCI_env$EnvHet, 
+         BCI_env$sr,
+         alternative = "greater") #p-value = 0.45 e cor = 0.021
+
+
+
+
+
+
+
+
 
 
 
