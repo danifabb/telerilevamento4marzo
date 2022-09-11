@@ -337,6 +337,8 @@ cor.test(BCI_env$EnvHet,
          alternative = "greater") #p-value = 0.45 e cor = 0.021
 
 #VERSIONE DEFINITIVA
+### IMPORT E PULIZIA DEL DATASET BCI
+
 # provo a caricare il dataframe "BCI_env.txt", tuttavia si verifica un errore: ci sono alcuni elementi mancanti NA 
 # error: line 9 did not have 9 elements; nella riga 9 manca la modalità per la variabile "Precipitation"
 
@@ -395,7 +397,7 @@ unique(BCI_env$UTM.NS) # 5 modalità
 unique(BCI_env$EnvHet)
 
 summary(BCI_env) 
-# UTM.EW e UTM.NS: media e mediana coincidono 
+# UTM.EW e UTM.NS: media e mediana coincidono, distribuzione tende ad essere simmetrica 
 # UTM.NS: min 1011569; max 1011969 - plot selezionati a distanze regolari
 # per precipitation e elevation si ha un unico valore
 # EnvHet: min 0.0000; max 0.7264 
@@ -420,6 +422,133 @@ anyNA(BCI_env)
 
 #is.na(BCI_env$Precipitation)
 #sum(is.na(BCI_env))
+
+### DISTRIBUZIONE UNIVARIATA DELLE VARIABILI AMBIENTALI
+
+# rappresentazione dei caratteri quantitativi 
+
+hist(BCI_env$UTM.EW,
+     xlab = "UTM coordinates (zone 17N) East-West",
+     main = "",
+     breaks = 10)
+
+hist(BCI_env$UTM.NS,
+     xlab = "UTM coordinates (zone 17N) North-South",
+     main = "",
+     breaks = 5) # distribuzione quasi simmetrica
+
+hist(BCI_env$Precipitation,
+     xlab = "Precipitation (mm/year)",
+     xlim = c(2200, 2800),
+     main = "") 
+
+hist(BCI_env$Elevation,
+     xlab = "Elevation (m)",
+     xlim = c(80, 160),
+     main = "")
+
+hist(BCI_env$EnvHet,
+     xlab = "Eterogeneità ambientale (Simpson)",
+     main = "",
+     breaks = 8) #distribuzione asimmetrica
+# molti valori piccoli estremi: la classe che ha frequenza maggiore è quella tra 0 e 0.1
+# altre classi con frequenza alta: 0.4-0.5 e 0.6-0.7
+
+hist(BCI_env$sr,
+     xlab = "Ricchezza di specie",
+     main = "Distribuzione della ricchezza di specie nell'isola Barro Colorado") 
+# ricchezza va da circa 75 a circa 110 specie per plot 
+# la maggior parte dei plot hanno un numero di specie tra le 80 e le 95
+
+# esporto quest'ultimo istogramma in formato .png
+png("outputs/species_richness_hist.png", width = 2000, height = 1200, res = 300)
+hist(BCI_env$sr,
+     xlab = "Ricchezza di specie",
+     main = "Distribuzione della ricchezza di specie nell'isola Barro Colorado")
+dev.off()
+
+
+# rappresentazione di caratteri qualitativi
+
+agecat <- table(BCI_env$Age.cat)
+barplot(agecat,
+        xlab = "Forest age category",
+        ylab = "N° of plots") # il 98% dei plot sono di categoria c3
+
+habitat <- table(BCI_env$Habitat)
+barplot(habitat,
+        xlab = "Habitat",
+        ylab = "N° di plot") # circa metà dei plot sono foresta OldLow
+
+stream <- table(BCI_env$Stream)
+barplot(stream,
+        xlab = "River",
+        ylab = "N° of plots") # circa 10% dei plot ha un corso d'acqua
+
+jpeg("outputs/habitat_barplot.jpeg", width = 2000, height = 1200, res = 300)
+habitat <- table(BCI_env$Habitat)
+barplot(habitat,
+        xlab = "Habitat",
+        ylab = "N° di plot",
+        main = "Tipi di habitat sull'isola Barro Colorado")
+dev.off()
+
+# trasformo la matrice di abbondanza in matrice di assenza/presenza
+BCI_pa <- decostand(BCI, method = "pa") 
+View(BCI_pa)
+
+#head(BCI_pa)[, 1:5] 
+
+# calcolo la ricchezza di specie per ogni plot
+sr <- specnumber(BCI) 
+View(sr) # es. nella prima osservazione sono state trovate 93 specie
+
+# aggiungo una colonna a BCI_env per la ricchezza di specie
+BCI_env$sr <- sr 
+str(BCI_env) # sr è vettore integer; abbiamo 10 variabili
+
+#sr_1 <- specnumber(BCI)
+#sort(specnumber(BCI, MARGIN = 2))
+
+### TEST DI CORRELAZIONE
+
+# faccio il plot della ricchezza di specie rispetto alle variabili numeriche 
+# controllo se le due variabili sono significativamente correlate grazie al test di correlazione
+# l'ipotesi nulla è che le due variabili NON siano correlate
+
+plot(BCI_env$UTM.EW,
+     BCI_env$sr) 
+cor.test(BCI_env$UTM.EW,
+         BCI_env$sr,
+         alternative = "less") 
+# p-value = 0.12 -> non significativo, non posso rifiutare l'ipotesi nulla
+# intervallo di confidenza -0.4009874;  1.0000000 (passa da negativo a positivo, altra fonte di incertezza)
+# cor = - 0.18
+
+plot(BCI_env$UTM.NS,
+     BCI_env$sr) 
+cor.test(BCI_env$UTM.NS,
+         BCI_env$sr,
+         alternative = "greater") # p-value = 0.26
+
+plot(BCI_env$Precipitation,
+     BCI_env$sr) 
+cor.test(BCI_env$Precipitation,
+         BCI_env$sr,
+         alternative = "greater") # p-value = NA
+# la deviazione standard (ovvero la misura della variabilità) è 0, perché abbiamo un unico valore
+
+plot(BCI_env$EnvHet,
+     BCI_env$sr) 
+cor.test(BCI_env$EnvHet, 
+         BCI_env$sr,
+         alternative = "greater") #p-value = 0.45 e cor = 0.021
+
+
+
+
+
+
 
 
 
