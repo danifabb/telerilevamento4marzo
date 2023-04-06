@@ -3,12 +3,16 @@
 #install.packages("raster")
 library(raster)
 setwd("C:/lab/")
-l2011 <- brick("p224r63_2011.grd") #multi-layer raster object typically created from a multi-layer (band) file
+
+#import di un oggetto
+l2011 <- brick("p224r63_2011.grd") # RasterBrick object = multi-layer raster object typically created from a multi-layer (band) file
 l2011
  
 # plot
 plot(l2011)
-cl <- colorRampPalette(c("black", "grey", "light grey")) (100)
+# vettore o array = insieme di elementi es. c(2, 4, 7)
+cl <- colorRampPalette(c("black", "grey", "light grey")) (100) # a vector of colors; i colori vanno tra virgolette; numero alla fine c'entra con la suddivisione dei colori nello spettro? Credo?
+# plot per mettere in relazione due funzioni
 plot(l2011, col=cl)
 # b1 = blu
 # b2 = verde
