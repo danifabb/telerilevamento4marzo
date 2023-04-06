@@ -3,7 +3,7 @@
 #install.packages("raster")
 library(raster)
 setwd("C:/lab/")
-l2011 <- brick("p224r63_2011.grd")
+l2011 <- brick("p224r63_2011.grd") #multi-layer raster object typically created from a multi-layer (band) file
 l2011
  
 # plot
