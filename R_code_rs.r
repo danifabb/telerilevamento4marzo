@@ -11,29 +11,43 @@ l2011
 # plot
 plot(l2011)
 # vettore o array = insieme di elementi es. c(2, 4, 7)
-cl <- colorRampPalette(c("black", "grey", "light grey")) (100) # a vector of colors; i colori vanno tra virgolette; numero alla fine c'entra con la suddivisione dei colori nello spettro? Credo?
+cl <- colorRampPalette(c("black", "grey", "light grey")) (100) # a vector of colors; i colori vanno tra virgolette; 100 è il numero di tonalità tra nero e light grey
 # plot per mettere in relazione due funzioni
 plot(l2011, col=cl)
+
+# Landsat ETM+ = Enhanced Thematic Mapper+, sensore montato a bordo del satellite Landsat
+# immagine di riserva in Brasile che ha subito deforestazione
+# sensore percepisce 7 bande spettrali, consideriamo le prime 4
 # b1 = blu
 # b2 = verde
 # b3 = rosso
-# b4 = infrarosso vicino
+# b4 = infrarosso vicino (NIR)
 # plot della banda del blu (B1_sre)
-plot(l2011$B1_sre)
+plot(l2011$B1_sre) # segno del dollaro lega 2 pezzi di R, in questo caso l'immagine satellitare con la banda
 # oppure
-plot(l2011[[1]])
+plot(l2011[[1]]) # parentesi quadra doppia = elemento interno a R - individuo il layer, il singolo elemento 
+
 # plot b1 from dark blue to light blue
-plot(l2011$B1_sre, col = cl1)
-# export image to lab fold
+clb <- colorRampPalette(c("dark blue", "blue", "light blue")) (100)
+plot(l2011$B1_sre, col = clb)
+
+# export image to lab folder
 pdf("banda1.pdf")
 plot(l2011$B1_sre, col = cl1)
 dev.off()
 # stessa cosa ma creo file png
-# plot b2 from dark green to 
+png("banda1.png")
+plot(l2011$B1_sre, col=clb)
+dev.off()
+
+# plot b2 from dark green to green to light green
+clg <- colorRampPalette(c("dark green", "green", "light green")) (100)
+plot(l2011$B2_sre, col=clg)
+
 # multiframe 
-par(mfrow = c(1, 2))
-plot(l2011$B1_sre, col = cl1)
-plot(l2011$B2_sre, col=cl2)
+par(mfrow = c(1, 2)) # una roga e due colonne
+plot(l2011$B1_sre, col = clb)
+plot(l2011$B2_sre, col=clg)
 # export multiframe
 # export multiframe plot
 pdf("multiframe.pdf")
@@ -41,15 +55,18 @@ par(mfrow=c(1,2))
 plot(l2011$B1_sre, col=clb)
 plot(l2011$B2_sre, col=clg)
 dev.off()
+#revert the multiframe; due righe e una colonna
 par(mfrow=c(2,1))
-plot(l2011$B1_sre, col=cl1)
-plot(l2011$B2_sre, col=cl2)
+plot(l2011$B1_sre, col=clb)
+plot(l2011$B2_sre, col=clg)
 # let's plot the first four 
-par(mfrow=c(2,2))
-plot(l2011$B1_sre, col=cl1)
-plot(l2011$B2_sre, col=cl2)
+par(mfrow=c(2,2)) # 2 righe e 2 colonne
+plot(l2011$B1_sre, col=clb)
+plot(l2011$B2_sre, col=clg)
+# red
 clr <- colorRampPalette(c("dark red", "red", "pink")) (100)
 plot(l2011$B3_sre, col=clr)
+# NIR
 clnir <- colorRampPalette(c("red", "orange", "yellow")) (100)
 plot(l2011$B4_sre, col=clnir)
 
