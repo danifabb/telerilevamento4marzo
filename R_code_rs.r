@@ -6,17 +6,19 @@ setwd("C:/lab/")
 
 #import di un oggetto
 l2011 <- brick("p224r63_2011.grd") # RasterBrick object = multi-layer raster object typically created from a multi-layer (band) file
-l2011
+# p sta per path
+l2011 #landsat2011
  
 # plot
 plot(l2011)
 # vettore o array = insieme di elementi es. c(2, 4, 7)
 cl <- colorRampPalette(c("black", "grey", "light grey")) (100) # a vector of colors; i colori vanno tra virgolette; 100 è il numero di tonalità tra nero e light grey
 # plot per mettere in relazione due funzioni
-plot(l2011, col=cl)
+plot(l2011, col=cl) # plot delle singole bande con la legenda da noi definita
+# le bande rappresentano la riflettanza dei vari colori (luce riflessa su quella incidente)
 
 # Landsat ETM+ = Enhanced Thematic Mapper+, sensore montato a bordo del satellite Landsat
-# immagine di riserva in Brasile che ha subito deforestazione
+# immagine di riserva Parakana, in Brasile, che ha subito deforestazione
 # sensore percepisce 7 bande spettrali, consideriamo le prime 4
 # b1 = blu
 # b2 = verde
