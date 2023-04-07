@@ -14,7 +14,7 @@ plot(l2011)
 # vettore o array = insieme di elementi es. c(2, 4, 7)
 cl <- colorRampPalette(c("black", "grey", "light grey")) (100) # a vector of colors; i colori vanno tra virgolette; 100 è il numero di tonalità tra nero e light grey
 # plot per mettere in relazione due funzioni
-plot(l2011, col=cl) # plot delle singole bande con la legenda da noi definita
+plot(l2011, col=cl) # plot delle singole bande con la legenda da noi definita - abbiamo plottato tutte le bande con la stessa paletta di colori
 # le bande rappresentano la riflettanza dei vari colori (luce riflessa su quella incidente)
 
 # Landsat ETM+ = Enhanced Thematic Mapper+, sensore montato a bordo del satellite Landsat
@@ -31,7 +31,9 @@ plot(l2011[[1]]) # parentesi quadra doppia = elemento interno a R - individuo il
 
 # plot b1 from dark blue to light blue
 clb <- colorRampPalette(c("dark blue", "blue", "light blue")) (100)
-plot(l2011$B1_sre, col = clb)
+plot(l2011$B1_sre, col = clb) # tutto che assorbe sarà blu scuro e tutto quello che riflette sarà blu chiaro
+# a colori più scuri (es. blu scuro, verde scuro) corrispondono valori di riflettanza più bassi (più luce viene assorbita) 
+# a colori più chiari corrispodono valori più alti (più luce viene riflessa)
 
 # export image to lab folder
 pdf("banda1.pdf")
@@ -47,7 +49,7 @@ clg <- colorRampPalette(c("dark green", "green", "light green")) (100)
 plot(l2011$B2_sre, col=clg)
 
 # multiframe 
-par(mfrow = c(1, 2)) # una roga e due colonne
+par(mfrow = c(1, 2)) # una riga e due colonne
 plot(l2011$B1_sre, col = clb)
 plot(l2011$B2_sre, col=clg)
 # export multiframe
@@ -66,7 +68,7 @@ par(mfrow=c(2,2)) # 2 righe e 2 colonne
 plot(l2011$B1_sre, col=clb)
 plot(l2011$B2_sre, col=clg)
 # red
-clr <- colorRampPalette(c("dark red", "red", "pink")) (100)
+clr <- colorRampPalette(c("violet", "red", "pink")) (100)
 plot(l2011$B3_sre, col=clr)
 # NIR
 clnir <- colorRampPalette(c("red", "orange", "yellow")) (100)
