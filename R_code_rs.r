@@ -80,11 +80,20 @@ setwd("C:/lab/")
 l2011 <- brick("p224r63_2011.grd")
 clr <- colorRampPalette(c("dark red", "red", "pink")) (100)
 plot(l2011$B3_sre, col=clr)
-# plot RGB layers) - vedo immagine come la vede all'occhio umano
+
+# plot RGB layers) - vedo immagine come la vede all'occhio umano (colori naturali)
 # stretch serve per massimizzare contrato tra i colori
-plotRGB(l2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(l2011, r=3, g=2, b=1, stretch="lin") #option to stretch the values to increase the contrast of the image (contrasti tra colori)
+# lin = lineare; hist = a istogrammi
+# maschera = parte in cui non sono registrati valori (nera)
+# noi possiamo usare 3 bande soltanto; voglio aggiungere banda NIR, quindi devo togliere la riflettanza del blu
+# tutto quello che riflette molto nell'IR, diventa di colore rosso, perché associato a componente red
 plotRGB(l2011, r=4, g=3, b=2, stretch="lin")
+# abbiamo montato sulla componente red la banda dell’IR vicino. La pianta riflette tantissimo l’infrarosso 
+# tutto quello che riflette l’infrarosso viene VISUALIZZATO come rosso, aumenta il contrasto tra parti vegetate e non 
+
 plotRGB(l2011, r=3, g=4, b=2, stretch="lin")
+# componente NIR montata sulla banda del blu
 plotRGB(l2011, r=3, g=2, b=4, stretch="lin")
 # uso stretch="hist" per vedere meglio la diversità della vegetazione, i frattali della veg
 plotRGB(l2011, r=3, g=4, b=2, stretch="hist")
