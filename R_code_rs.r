@@ -96,7 +96,7 @@ plotRGB(l2011, r=3, g=4, b=2, stretch="lin")
 # componente NIR montata sulla banda del blu
 plotRGB(l2011, r=3, g=2, b=4, stretch="lin")
 # uso stretch="hist" per vedere meglio la diversità della vegetazione, i frattali della veg
-plotRGB(l2011, r=3, g=4, b=2, stretch="hist")
+plotRGB(l2011, r=3, g=4, b=2, stretch="hist") #altissima differenziazione nelle colorazioni, dovuta a funzione sinusoide
 
 # build a multiframe with visible RGB 
 # linear stretch on top of false colours
@@ -104,6 +104,8 @@ plotRGB(l2011, r=3, g=4, b=2, stretch="hist")
 par(mfrow=c(2,1))
 plotRGB(l2011, r=3, g=2, b=1, stretch="lin")
 plotRGB(l2011, r=3, g=4, b=2, stretch="hist")
+
+# carico immagine della stessa riserva ma nel 1988
 l1988 <- brick("p224r63_1988.grd")
 l1988
 par(mfrow=c(2,1))
