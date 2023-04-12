@@ -17,17 +17,23 @@ plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
 plotRGB(l2006, r=1, g=2, b=3, stretch="lin")
 # DVI = NIR - red 
 dvi1992 = l1992[[1]] - l1992[[2]]
-dvi1992
+# alternativamente: # dvi1992 = l1992$defor2_.1 - l1992$ defor2_.2dvi1992
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) 
 # giallo messo nella parte intermedia dello spettro per mostrare deforestazione
+# tutto ciò che è rosso scuro è sano, tutto ciò che è giallo sta soffrendo (a parte il fiume)
+# 2006: foresta molto frammentata, corridoi forestati ma tanta area gialla
 plot(dvi1992, col=cl)
+
 dvi2006 = l2006[[1]] - l2006[[2]]
-# alternativamente: # dvi1992 = l1992$defor2_.1 - l1992$ defor2_.2
-# dvi difference in time
+plot(dvi2006, col=cl)
+
+# dvi difference in time - confronto zone in cui dvi era alto nel 1992 mentre nel 2006 invece è basso causa deforestazione
+# si può essere abbassato ad esempio da 220 a 50
 dvi_dif = dvi1992 - dvi2006
 cld <- colorRampPalette(c('blue','white','red'))(100)
 plot(dvi_dif, col= cld)
 # rosso: punti in cui la differenza tra 1992 e 2006 è molto alta
+
 # day2
 range DVI (8 bit): -255 a 255
 range NDVI (8 bit): -1 a 1
