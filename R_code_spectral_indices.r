@@ -74,10 +74,10 @@ plot(si1992, col=cl)
 si2006 <- spectralIndices(l2006, green=3, red=2, nir=1)
 plot(si2006,col=cl)
 
-install.packages("rasterdiv")
+install.packages("rasterdiv") # diversità misurata su dati raster, partendo dall'ecologia di comunità (Shannon, Pielou, Simpson, ecc)
 library(rasterdiv)
 # cop sta per copernicus: 8-bit raster, media globale dell'NDVI in un certo lasso di tempo 
-plot(copNDVI)
+plot(copNDVI) # NDVI di Copernicus - media globale dell'NDVI dal 1999 al 2007. Più l'indice è alto, più c'è vegetazione e biomassa
 # zone verdi sono quelle con più biomassa (foreste di conifere e fascia equatoriale)
 
 # day 3
