@@ -35,30 +35,38 @@ plot(dvi_dif, col= cld)
 # rosso: punti in cui la differenza tra 1992 e 2006 è molto alta
 
 # day2
-range DVI (8 bit): -255 a 255
-range NDVI (8 bit): -1 a 1
+#range DVI (8 bit): -255 a 255
+#range NDVI (8 bit): -1 a 1
 # range DVI (16 bit) = - 65535 a 65535
 # range NDVI (16 bit) = - 1 a 1
+# NDVI può essere usato per risoluzione radiometrica differente
 library(raster)
 setwd("C:/lab/")
-l1992 <- brick("defor1_.jpg")
+l1992 <- brick("defor1_.jpg") #immagine a 8 bit
 l1992
-l2006 <- brick("defor2_.jpg")
+l2006 <- brick("defor2_.jpg") # immagine a 8 bit
 dvi1992 = l1992[[1]] - l1992[[2]]
-ndvi1992 = dvi1992/(l1992[[1]] + l1992[[2]])
-ndvi1992
-plot(ndvi1992, col=cl)
+ndvi1992 = dvi1992/(l1992[[1]] + l1992[[2]]) # standardizzazione di DVI per confronto con l'immagine del 2006
+ndvi1992 # da -1 a 1
+cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100)
+plot(ndvi1992, col=cl) # parti rosso chiaro in cui c'è stata deforestazione
+# il -1 di NDVI è dell'acqua, però qui invece l'acqua è giallo (un po' più alto) a causa dei sedimenti; è giallo anche irl
+# l'NDVI dell'acqua è uguale a quello del suolo aperto 
 par(mfrow=c(2,1))
 plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
-plot(ndvi1992, col=cl)
+plot(ndvi1992, col=cl) 
 # 2006 
 dvi2006 = l2006[[1]] - l2006[[2]]
 ndvi2006 = dvi2006/(l2006[[1]] + l2006[[2]])
+
 par(mfrow=c(2,1))
 plot(ndvi1992, col=cl)
 plot(ndvi2006, col=cl)
 # valore dell'ndvi era alto (verso valori dell'1) nel 1992, ma nel 2006 è diventato molto più basso, verso -1
-# automatic spectral indices (si)
+
+# automatic spectral indices (si) - calcolo automaticamente NDVI
+install.packages("RStoolBox")
+library(RStoolBox)
 si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
 plot(si1992, col=cl)
 # codice del professore: si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
