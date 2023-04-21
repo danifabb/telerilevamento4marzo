@@ -67,11 +67,12 @@ plot(ndvi2006, col=cl)
 # automatic spectral indices (si) - calcolo automaticamente NDVI
 install.packages("RStoolBox")
 library(RStoolBox)
-si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
+si1992 <- spectralIndices(l1992, green=3, red=2, nir=1) # calcola automaticamente tutti gli indici possibili per quelle 3 bande (NDVI, SAVI, NDWI, ecc)
+# NDWI è ACQUA per ogni singolo pixel! Per siccità. Normalized Difference Water Index. 
+# Nel 2006 vediamo stress idrico dovuto a distruzione foresta, si abbassa l'indice, va verso -1 (più rosso e meno giallo)
 plot(si1992, col=cl)
-# codice del professore: si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
-# si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
-# plot(si1992,col=cl)
+si2006 <- spectralIndices(l2006, green=3, red=2, nir=1)
+plot(si2006,col=cl)
 
 install.packages("rasterdiv")
 library(rasterdiv)
