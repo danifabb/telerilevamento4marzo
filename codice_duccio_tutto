@@ -1,0 +1,954 @@
+# install.packages("raster")
+library(raster)
+
+# Settaggio cartella di lavoro
+setwd("~/lab/") # Linux
+# setwd("/Users/emma/desktop/lab") #mac
+# setwd("C:/lab/") # windows
+
+# import
+l2011 <- brick("p224r63_2011.grd")
+l2011
+
+# plot
+plot(l2011)
+
+# https://www.r-graph-gallery.com/42-colors-names.html
+cl <- colorRampPalette(c("black", "grey", "light grey")) (100)
+plot(l2011, col=cl)
+
+# dev.off()
+
+# Landsat ETM+
+# b1 = blu
+# b2 = verde
+# b3 = rosso
+# b4 = infrarosso vicino NIR
+
+# plot della banda del blu - B1_sre
+plot(l2011$B1_sre) # trinity
+# or
+plot(l2011[[1]]) # neo
+
+plot(l2011$B1_sre) 
+cl <- colorRampPalette(c("black", "grey", "light grey")) (100)
+plot(l2011$B1_sre, col=cl) 
+
+# plot b1 from dark blue to blue to light blue
+clb <- colorRampPalette(c("dark blue", "blue", "light blue")) (100)
+plot(l2011$B1_sre, col=clb) 
+
+# let's export the image and let it appear in the lab folder: kind of magic!
+pdf("banda1.pdf")
+plot(l2011$B1_sre, col=clb) 
+dev.off()
+
+png("banda1.png")
+plot(l2011$B1_sre, col=clb) 
+dev.off()
+
+# plot b2 from dark green to green to light green
+clg <- colorRampPalette(c("dark green", "green", "light green")) (100)
+plot(l2011$B2_sre, col=clg) 
+
+# multiframe
+par(mfrow=c(1,2))
+plot(l2011$B1_sre, col=clb) 
+plot(l2011$B2_sre, col=clg) 
+dev.off()
+
+# export multiframe plot
+pdf("multiframe.pdf")
+par(mfrow=c(1,2))
+plot(l2011$B1_sre, col=clb) 
+plot(l2011$B2_sre, col=clg) 
+dev.off()
+
+# exercise: revert the multiframe
+par(mfrow=c(2,1))
+plot(l2011$B1_sre, col=clb) 
+plot(l2011$B2_sre, col=clg) 
+
+# let's plot the first four bands
+par(mfrow=c(2,2))
+# blue
+plot(l2011$B1_sre, col=clb) 
+# green
+plot(l2011$B2_sre, col=clg) 
+# red
+clr <- colorRampPalette(c("dark red", "red", "pink")) (100)
+plot(l2011$B3_sre, col=clr)
+# NIR
+clnir <- colorRampPalette(c("red", "orange", "yellow")) (100)
+plot(l2011$B4_sre, col=clnir)
+
+# Day #3
+
+# Plot of l2011 in the NIR channel (NIR band)
+clnir <- colorRampPalette(c("red", "orange", "yellow")) (100)
+plot(l2011$B4_sre, col=clnir)
+# or:
+plot(l2011[[4]])
+
+# Landsat ETM+
+# b1 = blu
+# b2 = verde
+# b3 = rosso
+# b4 = infrarosso vicino NIR
+
+# plot RGB layers
+plotRGB(l2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(l2011, r=3, g=4, b=2, stretch="lin")
+plotRGB(l2011, r=3, g=2, b=4, stretch="lin")
+
+plotRGB(l2011, r=3, g=4, b=2, stretch="hist")
+
+# Exercise: build a multiframe with visible RGB 
+# (linear stretch) on top of false colours
+# (histogram stretch) 
+par(mfrow=c(2,1))
+plotRGB(l2011, r=3, g=2, b=1, stretch="lin")
+plotRGB(l2011, r=3, g=4, b=2, stretch="hist")
+
+# Exercise: upload the image from 1988
+l1988 <- brick("p224r63_1988.grd")
+l1988
+
+par(mfrow=c(2,1))
+plotRGB(l1988, r=4, g=3, b=2, stretch="lin")
+plotRGB(l2011, r=4, g=3, b=2, stretch="lin")
+
+# R_code_spectral_indices
+library(raster)
+# install.packages("rgdal")
+# install.packages("RStoolbox")
+# install.packages("rasterdiv")
+# library(rgdal)
+library(RStoolbox)
+# library(rasterdiv)
+
+setwd("~/lab/") # Linux
+# setwd("C:/lab/") # Windows
+# setwd("/Users/name/Desktop/lab/") # Mac
+
+# Exercise: import the first file -> defor1_.jpg -> give it the name l1992
+l1992 <- brick("defor1_.jpg")
+
+plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
+                  
+# layer 1 = NIR
+# layer 2 = red
+# layer 3 = green
+
+
+# Exercise: import the second file -> defor2_.jpg -> give it the name l2006
+l2006 <- brick("defor2_.jpg")
+
+# l2006 <- brick("p224r63_2011.grd")
+l2006
+
+plotRGB(l2006, r=1, g=2, b=3, stretch="lin")
+
+# Exercise: plot in a multiframe the two images with one on top of the other
+par(mfrow=c(2,1))
+plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
+plotRGB(l2006, r=1, g=2, b=3, stretch="lin")
+
+# DVI Difference Vegetation Index
+dvi1992 = l1992[[1]] - l1992[[2]]
+# or:
+# dvi1992 = l1992$defor1_.1 - l1992$defor1_.2
+dvi1992 
+
+cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
+plot(dvi1992, col=cl)
+
+# DVI Difference Vegetation Index
+dvi2006 = l2006[[1]] - l2006[[2]]
+dvi2006
+
+plot(dvi2006, col=cl)
+
+
+# DVI difference in time
+dvi_dif = dvi1992 - dvi2006
+cld <- colorRampPalette(c('blue','white','red'))(100) 
+plot(dvi_dif, col=cld)
+
+#- day 2
+
+# Range DVI (8 bit): -255 a 255
+# Range NDVI (8 bit): -1 a 1
+
+# Range DVI (16 bit): -65535 a 65535
+# Range NDVI (16 bit): -1 a 1
+
+# Hence, NDVI can be used to compare images with a different radiometric resolution
+
+# NDVI 1992
+dvi1992 = l1992[[1]] - l1992[[2]]
+ndvi1992 = dvi1992 / (l1992[[1]] + l1992[[2]])
+# or
+ndvi1992 = (l1992[[1]] - l1992[[2]]) / (l1992[[1]] + l1992[[2]])
+
+cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
+plot(ndvi1992, col=cl)
+
+# multiframe con il plotRGB dell'immagine sopra
+# e l'ndvi sotto
+
+# Multiframe with plotRGB on top of the NDVI image
+par(mfrow=c(2,1))
+plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
+plot(ndvi1992, col=cl)
+
+# 2006
+ndvi2006 = dvi2006 / (l2006[[1]] + l2006[[2]])
+
+# Multiframe with NDVI1992 on top of the NDVI2006 image
+par(mfrow=c(2,1))
+plot(ndvi1992, col=cl)
+plot(ndvi2006, col=cl)
+
+# Automatic spectral indices by the spectralIndices function
+si1992 <- spectralIndices(l1992, green=3, red=2, nir=1)
+plot(si1992,col=cl)
+
+si2006 <- spectralIndices(l2006, green=3, red=2, nir=1)
+plot(si2006,col=cl)
+
+### rasterdiv
+# plot(copNDVI)
+
+# Time series analysis
+# Greenland increase of temperature
+# Data and code from Emanuela Cosma
+
+# install.packages("raster")
+# install.packages("rasterVis")
+library(raster)
+# library(rasterVis) 
+
+# library(rgdal)
+
+setwd("~/lab/greenland") # Linux
+# setwd("C:/lab/greenland") # Windows
+# setwd("/Users/name/Desktop/lab/greenland") # Mac 
+
+lst_2000 <- raster("lst_2000.tif")
+lst_2005 <- raster("lst_2005.tif")
+lst_2010 <- raster("lst_2010.tif")
+lst_2015 <- raster("lst_2015.tif")
+
+# par
+par(mfrow=c(2,2))
+plot(lst_2000)
+plot(lst_2005)
+plot(lst_2010)
+plot(lst_2015)
+
+# list f files:
+rlist <- list.files(pattern="lst")
+rlist
+
+import <- lapply(rlist,raster)
+import
+
+TGr <- stack(import)
+TGr
+plot(TGr)
+
+plotRGB(TGr, 1, 2, 3, stretch="Lin") 
+plotRGB(TGr, 2, 3, 4, stretch="Lin") 
+plotRGB(TGr, 4, 3, 2, stretch="Lin") 
+
+# levelplot(TGr)
+cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
+plot(TGr, col=cl)
+
+# levelplot(TGr,col.regions=cl, names.attr=c("July 2000","July 2005", "July 2010", "July 2015"))
+# 
+# levelplot(TGr,col.regions=cl, main="LST variation in time",
+#           names.attr=c("July 2000","July 2005", "July 2010", "July 2015"))
+# 
+
+##########################
+#### Example 2: NO2 decrease during the lockdown period
+##########################
+
+library(raster)
+
+setwd("~/lab/en") # Linux
+# setwd("C:/lab/en") # Windows
+# setwd("/Users/name/Desktop/lab/en") # Mac 
+
+en01 <- raster("EN_0001.png") 
+
+cl <- colorRampPalette(c('red','orange','yellow'))(100) # 
+plot(en01, col=cl)
+
+en13 <- raster("EN_0013.png")
+plot(en13, col=cl)
+
+# Let's import the whole set (altogether!)
+
+# Exercise: import the whole as in the Greenland example
+# by the following steps: list.files, lapply, stack 
+
+rlist <- list.files(pattern="EN")
+
+# lapply(X,FUN)
+rimp <- lapply(rlist, raster)
+
+# stack
+en <- stack(rimp)
+
+# plot everything
+plot(en, col=cl)
+
+# Exercise: plot EN01 besides EN13
+par(mfrow=c(1,2))
+plot(en[[1]], col=cl)
+plot(en[[13]], col=cl)
+
+# or:
+en113 <- stack(en[[1]], en[[13]])
+plot(en113, col=cl)
+
+# let's make the difference:
+difen <-  en[[1]] - en[[13]]
+cldif <- colorRampPalette(c('blue','white','red'))(100) # 
+plot(difen, col=cldif)
+
+# plotRGB of three files together
+plotRGB(en, r=1, g=7, b=13, stretch="lin")
+plotRGB(en, r=1, g=7, b=13, stretch="hist")
+
+library(raster)
+# install.packages("RStoolbox")
+library(RStoolbox)
+
+setwd("~/lab/") # Linux
+# setwd("C:/lab/") # Windows
+# setwd("/Users/name/Desktop/lab/") # Mac 
+
+# data import
+so <- brick("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
+
+plotRGB(so, 1, 2, 3, stretch="lin")
+plotRGB(so, 1, 2, 3, stretch="hist")
+
+# Classifying the solar data 
+soc <- unsuperClass(so, nClasses=3)
+
+cl <- colorRampPalette(c('yellow','black','red'))(100)
+plot(soc$map, col=cl)
+
+# set.seed can be used for repeating the experiment in the same manner for N times
+# http://rfunction.com/archives/62 
+
+#### 
+
+# day 2 Grand Canyon
+
+gc <- brick("dolansprings_oli_2013088_canyon_lrg.jpg")
+gc
+
+# rosso = 1
+# verde = 2
+# blu = 3
+
+plotRGB(gc, r=1, g=2, b=3, stretch="lin")
+
+# change the stretch to histogram stretching
+plotRGB(gc, r=1, g=2, b=3, stretch="hist")
+
+# classification
+gcclass2 <- unsuperClass(gc, nClasses=2)
+gcclass2
+
+plot(gcclass2$map)
+# set.seed(17)
+
+# Exercise: classify the map with 4 classes
+gcclass4 <- unsuperClass(gc, nClasses=4)
+gcclass4
+
+clc <- colorRampPalette(c('yellow','red','blue','black'))(100)
+plot(gcclass4$map, col=clc)
+
+# compare the classified map with the original set
+par(mfrow=c(2,1))
+plot(gcclass4$map, col=clc)
+plotRGB(gc, r=1, g=2, b=3, stretch="hist")
+
+# R_code_land_cover.r
+
+library(raster)
+library(RStoolbox) # classification
+# install.packages("ggplot2")
+library(ggplot2)
+# install.packages("gridExtra")
+library(gridExtra) # for grid.arrange plotting
+
+setwd("~/lab/") # Linux
+# setwd("C:/lab/") # Windows
+# setwd("/Users/name/Desktop/lab/") # Mac
+
+# NIR 1, RED 2, GREEN 3
+
+defor1 <- brick("defor1.jpg")
+plotRGB(defor1, r=1, g=2, b=3, stretch="lin")
+ggRGB(defor1, r=1, g=2, b=3, stretch="lin")
+
+defor2 <- brick("defor2.jpg")
+plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
+ggRGB(defor2, r=1, g=2, b=3, stretch="lin")
+
+par(mfrow=c(1,2))
+plotRGB(defor1, r=1, g=2, b=3, stretch="lin")
+plotRGB(defor2, r=1, g=2, b=3, stretch="lin")
+
+# multiframe with ggplot2 and gridExtra
+p1 <- ggRGB(defor1, r=1, g=2, b=3, stretch="lin")
+p2 <- ggRGB(defor2, r=1, g=2, b=3, stretch="lin")
+grid.arrange(p1, p2, nrow=2)
+
+# unsupervised classification
+d1c <- unsuperClass(defor1, nClasses=2)
+plot(d1c$map)
+# class 1: forest
+# class 2: agriculture
+
+# set.seed() would allow you to attain the same results ...
+
+d2c <- unsuperClass(defor2, nClasses=2)
+plot(d2c$map)
+# class 1: agriculture
+# class 2: forest
+
+d2c3 <- unsuperClass(defor2, nClasses=3)
+plot(d2c3$map)
+
+# frequencies
+freq(d1c$map)
+#   value  count
+# [1,]     1 306583
+# [2,]     2  34709
+
+s1 <- 306583 + 34709
+
+prop1 <- freq(d1c$map) / s1
+# prop forest: 0.8983012
+# prop agriculture: 0.1016988
+
+s2 <- 342726
+prop2 <- freq(d2c$map) / s2
+# prop forest: 0.5206958
+# prop agriculture: 0.4793042
+
+# build a dataframe
+cover <- c("Forest","Agriculture")
+percent_1992 <- c(89.83, 10.16)
+percent_2006 <- c(52.06, 47.93)
+
+percentages <- data.frame(cover, percent_1992, percent_2006)
+percentages
+
+# let's plot them!
+ggplot(percentages, aes(x=cover, y=percent_1992, color=cover)) + geom_bar(stat="identity", fill="white")
+ggplot(percentages, aes(x=cover, y=percent_2006, color=cover)) + geom_bar(stat="identity", fill="white")
+
+p1 <- ggplot(percentages, aes(x=cover, y=percent_1992, color=cover)) + geom_bar(stat="identity", fill="white")
+p2 <- ggplot(percentages, aes(x=cover, y=percent_2006, color=cover)) + geom_bar(stat="identity", fill="white")
+
+grid.arrange(p1, p2, nrow=1)
+
+# R code variability
+
+library(raster)
+library(RStoolbox) # for image viewing and variability calculation
+library(ggplot2) # for ggplot plotting
+library(patchwork) # multiframe with ggplot2 graphs
+# install.packages("viridis")
+library(viridis)
+
+setwd("~/lab/") # Linux
+# setwd("C:/lab/") # Windows
+# setwd("/Users/name/Desktop/lab/") # Mac
+
+# Exercise: import the Similaun image
+sen <- brick("sentinel.png")
+
+# band1 = NIR
+# band2 = red
+# band3 = green
+
+# Exercise: plot the image by the ggRGB function
+ggRGB(sen, 1, 2, 3, stretch="lin") # stretch is done automatically
+# hence:
+ggRGB(sen, 1, 2, 3)
+
+# NIR on g component
+ggRGB(sen, 2, 1, 3)
+
+# Exercise: plot the two graphs one beside the other
+g1 <- ggRGB(sen, 1, 2, 3)
+g2 <- ggRGB(sen, 2, 1, 3)
+
+# Thanks to patchwork!: 
+g1+g2
+
+# Exercise: plot one graph on top of the other
+g1/g2
+
+# Exercise (suggested by the students) - 4 plots: 
+(g1+g2)/(g1+g2)
+
+# calculation of variability over NIR
+nir <- sen[[1]]
+
+sd3 <- focal(nir, matrix(1/9, 3, 3), fun=sd)
+
+clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
+plot(sd3, col=clsd)
+
+# plotting with ggplot
+ggplot() + 
+geom_raster(sd3, mapping=aes(x=x, y=y, fill=layer))
+
+# with viridis
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis() +
+ggtitle("Standard deviation by viridis package")
+
+# cividis
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "cividis") +
+ggtitle("Standard deviation by viridis package")
+
+# magma
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "magma") +
+ggtitle("Standard deviation by viridis package")
+
+# inferno
+ggplot() + 
+geom_raster(sd3, mapping =aes(x=x, y=y, fill=layer)) + 
+scale_fill_viridis(option = "inferno") +
+ggtitle("Standard deviation by viridis package")
+
+# R_code_multivariate_analysis.r
+
+library(raster)
+library(RStoolbox)
+
+setwd("~/lab/") # Linux
+# setwd("C:/lab/") # Windows
+# setwd("/Users/name/Desktop/lab/") # Mac 
+
+p224r63_2011 <- brick("p224r63_2011_masked.grd")
+
+plot(p224r63_2011)
+
+p224r63_2011
+
+plot(p224r63_2011$B1_sre, p224r63_2011$B2_sre, col="red", pch=19, cex=2)
+plot(p224r63_2011$B2_sre, p224r63_2011$B1_sre, col="red", pch=19, cex=2)
+
+pairs(p224r63_2011)
+
+# aggregate cells: resampling (ricampionamento)
+p224r63_2011res <- aggregate(p224r63_2011, fact=10)
+
+par(mfrow=c(2,1))
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="lin")
+plotRGB(p224r63_2011res, r=4, g=3, b=2, stretch="lin")
+
+p224r63_2011res_pca <- rasterPCA(p224r63_2011res)
+
+summary(p224r63_2011res_pca$model)
+
+# dev.off()
+plotRGB(p224r63_2011res_pca$map, r=1, g=2, b=3, stretch="lin")
+
+# LiDAR 
+# Load needed packages
+library(raster) #"Geographic Data Analysis and Modeling"
+library(rgdal) #"Geospatial Data Abstraction Library"
+library(viridis)
+library(ggplot2)
+
+# set working directory 
+setwd("C:/Users/MiTorresani/OneDrive - Alma Mater Studiorum Universit� di Bologna/lezioni/UniBo/esercizi/risultati")
+
+# load dsm 2013
+dsm_2013 <- raster("C:/Users/MiTorresani/OneDrive - Alma Mater Studiorum Universit� di Bologna/lezioni/UniBo/esercizi/dati/2013Elevation_DigitalElevationModel-0.5m.tif")
+
+# view info about the raster.
+dsm_2013
+
+# plot the DSM 2013
+plot(dsm_2013, main="Lidar Digital Surface Model San Genesio/Jenesien")
+
+# load dtm 2013
+dtm_2013 <- raster("C:/Users/MiTorresani/OneDrive - Alma Mater Studiorum Universit� di Bologna/lezioni/UniBo/esercizi/dati/2013Elevation_DigitalTerrainModel-0.5m.tif")
+
+#plot dtm 2013
+plot(dtm_2013, main="Lidar Digital Terrain Model San Genesio/Jenesien")
+
+# create CHM 2013 as difference between dsm and dtm
+chm_2013 <- dsm_2013 - dtm_2013
+
+# view CHM attributes
+chm_2013
+
+#plot CHM 2013
+ggplot() + 
+  geom_raster(chm_2013, mapping =aes(x=x, y=y, fill=layer)) + 
+  scale_fill_viridis() +
+  ggtitle("CHM 2013 San Genesio/Jenesien")
+
+#save the CHM on computer
+writeRaster(chm_2013,"chm_2013_San_genesio.tif")
+
+# Species Distribution Modelling
+
+# install.packages("sdm")
+# install.packages("rgdal", dependencies=T)
+
+library(sdm)
+library(raster) # predictors
+library(rgdal) # species
+
+file <- system.file("external/species.shp", package="sdm") 
+species <- shapefile(file)
+
+# looking at the set
+species
+
+# plot
+plot(species)
+
+# looking at the occurrences
+species$Occurrence
+
+# copy and then write:
+plot(species[species$Occurrence == 1,],col='blue',pch=16)
+points(species[species$Occurrence == 0,],col='red',pch=16)
+
+# predictors: look at the path
+path <- system.file("external", package="sdm") 
+
+# list the predictors
+lst <- list.files(path=path,pattern='asc$',full.names = T) #
+lst
+
+# stack
+preds <- stack(lst)
+
+# plot preds
+cl <- colorRampPalette(c('blue','orange','red','yellow')) (100)
+plot(preds, col=cl)
+
+# plot predictors and occurrences
+plot(preds$elevation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+plot(preds$temperature, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+plot(preds$precipitation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+plot(preds$vegetation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+# model
+
+# set the data for the sdm
+datasdm <- sdmData(train=species, predictors=preds)
+
+# model
+m1 <- sdm(Occurrence ~ elevation + precipitation + temperature + vegetation, data=datasdm, methods = "glm")
+
+# make the raster output layer
+p1 <- predict(m1, newdata=preds) 
+
+# plot the output
+plot(p1, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+
+# add to the stack
+s1 <- stack(preds,p1)
+plot(s1, col=cl)
+
+# Do you want to change names in the plot of the stack?
+# Here your are!:
+# choose a vector of names for the stack, looking at the previous graph, qhich are:
+names(s1) <- c('elevation', 'precipitation', 'temperature', 'vegetation', 'model')
+# and then replot!:
+plot(s1, col=cl)
+# you are done, with one line of code (as usual!)
+
+#The "colorist" (R) package was created to provide additional methodologies and options for studying and communicating information on the distribution of wildlife in space and time.
+#To do this "colorist" uses Rasterstack images that describe wildlife distributions, processes and links them to HCL palettes in specific ways.
+#Resulting visualizations allow viewers to meaningfully compare values of occurrence, abundance, or density over space and time.
+
+
+#What is the HCL palette? The Hue-Chroma-Luminance (HCL) color space is an alternative to other color spaces such as RGB, HSV, and so on.
+#Each color within the HCL color space is defined by a triplet of values. 
+#The dimensions are:
+
+   #Hue: defines the color (hue)
+   #Chroma: defines the color (saturation or intensity of the color)
+   #Luminance: defines the brightness
+   #(https://hclwizard.org/images//hclscheme_pic0.png)
+
+#The basic workflow for colorist is:
+
+   # 1.) Metrics: Users calculate metrics to describe their distributions.
+   # 2.) Color palette: Users choose a color palette to enable the display of metrics.
+   # 3.) Map: Users combine metrics and palette to map distributions into a single map or more.
+   # 4.) Legend: Users generate a legend to accompany their map.
+   
+
+install.packages("colorist")
+library(colorist)
+
+
+
+#EXAMPLE 1: MAPPING A DISTRIBUTION OF SPECIES IN THE ANNUAL CYCLE
+
+#Here, we use eBird status and trend aggregate data for Field Sparrow (Spizella pusilla) to illustrate a different strategy for creating annual cycle maps, which leverages continuous occurrence data to describe where and when viewers might be able to find a species.
+
+#Load the example using the data function
+
+data("fiespa_occ")
+fiespa_occ
+#class      : RasterStack 
+#dimensions : 193, 225, 43425, 12  (nrow, ncol, ncell, nlayers)
+#resolution : 14814.03, 14814.04  (x, y)
+#extent     : -1482551, 1850606, -1453281, 1405830  (xmin, xmax, ymin, ymax)
+#crs        : +proj=laea +lat_0=38.7476367322638 +lon_0=-90.2379515912106 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+#names      :       jan,       feb,       mar,       apr,       may,       jun,       jul,       aug,       sep,       oct,       nov,       dec 
+#min values :         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0 
+#max values : 0.8538026, 0.8272926, 0.7993844, 0.7805922, 0.7799550, 0.7745436, 0.7626938, 0.7867995, 0.7790458, 0.7896419, 0.8158410, 0.8681034
+
+
+1) We can Calculate the metrics
+
+met1<-metrics_pull(fiespa_occ) #This function transforms rasterstack values describing individual distributions or species distributions into standardized intensity values.
+print(met1)
+#class      : RasterBrick 
+#dimensions : 193, 225, 43425, 12  (nrow, ncol, ncell, nlayers)
+#resolution : 14814.03, 14814.04  (x, y)
+#extent     : -1482551, 1850606, -1453281, 1405830  (xmin, xmax, ymin, ymax)
+#crs        : +proj=laea +lat_0=38.7476367322638 +lon_0=-90.2379515912106 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+#source     : memory
+#names      :       jan,       feb,       mar,       apr,       may,       jun,       jul,       aug,       sep,       oct,       nov,       dec 
+#min values :         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0,         0 
+#max values : 0.9835264, 0.9529886, 0.9208400, 0.8991927, 0.8984586, 0.8922251, 0.8785749, 0.9063431, 0.8974113, 0.9096173, 0.9397971, 1.0000000
+
+
+#2.)We can create a palette (HCL).
+
+#We want to choose a palette that helps communicate temporal information about the occurrence of Field Sparrow.
+#We will use the palette_timecycle () function because our data represent an ordered and cyclic sequence (all months of the year)
+
+
+pal<- palette_timecycle(fiespa_occ)
+head(pal)   #we use head () to return the first values. "Pal" has 1212 objects, with head for example we take the first 6
+
+#  specificity layer_id   color
+#1           0        1 #6A6A6A
+#2           0        2 #6A6A6A
+#3           0        3 #6A6A6A
+#4           0        4 #6A6A6A
+#5           0        5 #6A6A6A
+#6           0        6 #6A6A6A   
+
+
+# We have seen how the palette_timecycle function returns us a data frame with three fields: specificy layer_id and color
+#The specificity and layer_id fields will be used to assign colors to specific raster cells
+
+
+#3.) Now we can create a map.
+
+#With the map_multiples () function we will be able to see the map for each layer, therefore for each month of the year
+#Inside the parenthesis we will write 1.) The metric / 2.) The palette used / 3.) ncol = x to define the number of columns to display / 4.) Labels = names (filename)
+
+map_multiples(met1, pal, ncol = 3, labels = names (fiespa_occ))
+
+
+#If we want to extract a month of data for deeper analysis, we can use map_single () and specify which month of data we would like to see using the layer argument.
+
+map_single(met1, pal, layer = 6)
+
+# To generate a single annual cycle map that summarizes space-time information on the occurrence of Field Sparrow, we need to "distill" the distributive information into our RasterStack.
+We can use metrics_distill ()
+
+#The metrics_distill () function calculates distribution metrics on all levels in each raster cell and returns three metrics for later viewing:
+
+# -Maximum intensity (that is, the maximum value of occurrence, abundance, or density).
+# -Maximum intensity layer (hence the identity of the layer containing the maximum intensity value)
+# -Specificity of the maximum intensity value for the maximum intensity layer (hence the degree to which the intensity values are unevenly distributed between the layers).
+
+met1_distill<-metrics_distill(fiespa_occ) # we can distill the information
+map_single(met1_distill,pal) #We then display the information in the single image with the "distilled" images and the palette created previously
+
+
+# 4.) Finally we create the legend.
+# previously we used the palette_timecycle () function and consequently we will use the legend_timecycle () function to display the legend
+#R will return a legend with circles.
+Information about when the time cycle begins (and ends) can also be provided in the "origin_label" argument.
+
+legend_timecycle(pal, origin_label = "jan 1")
+
+
+#CONCLUSIONS
+#With all the information described, with the map and with the legend, we are able to understand where and when to find this species.
+#The more colored parts will indicate high specificity but high probability of occurrence only at certain times of the year
+#The gray parts, on the other hand, will indicate low specificity but high occurrence throughout the year
+# In this case, low specificity indicates seasonality where 0 indicates presence all year round
+
+
+
+
+#EXAMPLE 2: MAPPING INDIVIDUAL BEHAVIOR OVER TIME
+
+
+#Here we explore how a Fisher individual (Pekania pennanti), who lives in upstate New York, moved into his local environment over a period of nine sequential nights in 2011.
+
+
+#Load the data
+
+data("fisher_ud")   
+fisher_ud
+#class      : RasterStack 
+#dimensions : 176, 177, 31152, 9  (nrow, ncol, ncell, nlayers)
+#resolution : 25, 25  (x, y)
+#extent     : -2282.343, 2142.657, 5100266, 5104666  (xmin, xmax, ymin, ymax)
+#crs        : +proj=moll +lon_0=-73.4137066015374 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs 
+#names      :      night1,      night2,      night3,      night4,      night5,      night6,      night7,      night8,      night9 
+#min values :           0,           0,           0,           0,           0,           0,           0,           0,           0 
+#max values : 0.004695207, 0.007591029, 0.006749434, 0.002891691, 0.002833876, 0.004711692, 0.002017082, 0.002700729, 0.005282948 
+
+
+
+#Extract the information from the Rasterstack
+
+m2<-metrics_pull(fisher_ud)
+m2
+
+#Create the palette, this time we use the palette_timeline function because unlike the previous example, they describe a linear and non-cyclic sequence
+
+pal2<-palette_timeline(fisher_ud)
+head(pal2)
+
+#We create maps (9, one for each day) that will describe the position of the individual in each day
+
+map_multiples(m2,ncol = 3, pal2)
+
+#It often happens that maps are faded.
+#The lambda_i parameter in map_multiples () and map_single () allows users to visually adjust the relative weights of high and low intensity values.
+#In this case we want to reduce the disparity between high and low intensity values so we set the value to -5.
+#We will see that the lower the lambda_i value, the more intense the color will be
+
+map_multiples(m2,ncol = 3, pal2, lambda_i = -5)
+
+
+#At this point we can distill the information
+#It is important to remember that specificity values (and the resulting display of specificity values) for Fisher must be interpreted differently than for Field Sparrow.
+#Here, specificity values indicate the degree to which the individual used the same locations within the landscape for nine nights. Low specificity suggests consistent use over time.
+
+m2_distill<-metrics_distill(fisher_ud)
+map_single(m2_distill,pal2,lambda_i = -5)
+
+
+#We used linear values so we will use legend_timeline and not legend_timecycle
+#In this case we can use time_labels to determine the investigation period.
+
+legend_timeline(pal2,time_labels = c("2 aprile", "11 aprile"))
+
+
+
+#EXAMPLE 3: MAPPING THE DISTRIBUTIONS OF MULTIPLE INDIVIDUALS DURING THE SAME TIME PERIOD
+
+# In the previous examples, we explored the distributions of a single species and a single individual over multiple time periods.
+#colorist can also be used to explore the distribution of multiple species or individuals in a single period of time.
+
+#Here, we use GPS tracking data collected from African elephants (Loxodonta africana) in Etosha National Park (Namibia) during 2011 to explore how two individuals used the landscape over the course of a year.
+
+
+#Load the data
+
+data("elephant_ud")
+elephant_ud
+#class      : RasterBrick 
+#dimensions : 208, 193, 40144, 2  (nrow, ncol, ncell, nlayers)
+#resolution : 500, 500  (x, y)
+#extent     : -58642.18, 37857.82, -2376938, -2272938  (xmin, xmax, ymin, ymax)
+#crs        : +proj=moll +lon_0=15.8231920275931 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs 
+#source     : memory
+#names      :      LA11,      LA14 
+#min values :         0,         0 
+#max values : 0.8525854, 1.0000000 
+
+
+#Extract the data from the Rasterstack
+
+met3<-metrics_pull(elephant_ud)
+
+
+#Here we encounter another function, palette_set ()
+#We use this function when we have an unordered set (they don't fit into linear or cyclic sequences)
+
+pal3<-palette_set(elephant_ud)
+
+
+#We can Create the multiple maps and then we will see the two samples, we use "labels" to extract the names present in the Rasterstack
+
+map_multiples(met3, pal3, ncol = 2,lambda_i = -5,labels = names(elephant_ud))
+
+
+
+#The usage distributions for LA11 and LA14 look remarkably similar at first glance, which is not surprising given that the two elephants belong to the same herd.
+#However, we can more clearly understand the similarities and differences in how they used space in 2011 by “distilling” the distributional information from the two raster layers with metrics_distill () and visualizing the resulting metrics with map_single ().
+
+#WE SHOULD RE-CALIBRATE OUR UNDERSTANDING OF THE MEANING OF SPECIFICITY
+
+#We stand in contrast to the Field Sparrow and Fisher examples, where specificity indicated the degree to which intensity values were inconsistent (or consistent) over time.
+#HERE WE CAN DEFINE IT AS A DIFFERENTIAL LANDSCAPE MEASURE.
+#THEREFORE LOW SPECIFICITY IS EQUAL TO COMMON USE OF THE LANDSCAPE, HIGH SPECIFICITY INDICATES A DIFFERENTIAL USE OF THE LANDSCAPE
+
+met3_distt<-metrics_distill(elephant_ud)
+map_single(met3_distt,pal2,lambda_i = -5)
+
+#Here we will use a different legend once again.
+#We will use legend_set and not legend_timeline or legend_timecycle 
+
+legend_set(pal3, group_labels = names(elephant_ud))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
